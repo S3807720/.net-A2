@@ -1,11 +1,14 @@
-﻿namespace MCBA_Web.Models
+﻿using System;
+
+namespace MCBA_Web.Models
 {
     public enum TransactionType
     {
         Deposit = 'D',
         Withdraw = 'W',
         Transfer = 'T',
-        ServiceCharge = 'S'
-
+        ServiceCharge = 'S',
+        BillPay = 'B'
     }
+
 }

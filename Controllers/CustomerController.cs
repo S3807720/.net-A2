@@ -6,6 +6,7 @@ using MCBA_Web.Data;
 using MCBA_Web.Models;
 using MCBA_Web.Utilities;
 using MCBA_Web.Filters;
+using MCBA_Web.ViewModels;
 
 namespace MCBA_Web.Controllers
 {
@@ -36,8 +37,51 @@ namespace MCBA_Web.Controllers
             return View(customer);
         }
 
-        public async Task<IActionResult> Deposit(int id) => View(await _context.Accounts.FindAsync(id));
+        //public async Task<IActionResult> Deposit(int id) => View(await _context.Accounts.FindAsync(id));
 
+        public async Task<IActionResult> Deposit(int id)
+        {
+            return View(
+                new DepositViewModel
+                {
+                    AccountNumber = id,
+                    Account = await _context.Accounts.FindAsync(id)
+                });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Deposit(DepositViewModel viewModel)
+        {
+            viewModel.Account = await _context.Accounts.FindAsync(viewModel.AccountNumber);
+
+            // Note this code could be moved out of the controller, e.g., into the model, business objects, facade,
+            // validators, etc...
+            if (viewModel.Amount <= 0)
+            {
+                ModelState.AddModelError(nameof(viewModel.Amount), "Amount must be positive.");
+                return View(viewModel);
+            }
+            if (viewModel.Amount.HasMoreThanTwoDecimalPlaces())
+            {
+                ModelState.AddModelError(nameof(viewModel.Amount), "Amount cannot have more than 2 decimal places.");
+                return View(viewModel);
+            }
+
+            // Note this code could be moved out of the controller, e.g., into the model or repository (design pattern).
+            viewModel.Account.Balance += viewModel.Amount;
+            viewModel.Account.Transactions.Add(
+                new Transaction
+                {
+                    TransactionType = TransactionType.Deposit,
+                    Amount = viewModel.Amount,
+                    TransactionTimeUtc = DateTime.UtcNow
+                });
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+/*
         [HttpPost]
         public async Task<IActionResult> Deposit(int id, decimal amount)
         {
@@ -66,6 +110,6 @@ namespace MCBA_Web.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
-        }
+        }*/
     }
 }

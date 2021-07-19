@@ -21,7 +21,7 @@ namespace MCBA_Web.Data
                     CustomerID = 2100,
                     Name = "Matthew Bolger",
                     Address = "123 Fake Street",
-                    City = "Melbourne",
+                    Suburb = "Melbourne",
                     PostCode = "3000"
                 },
                 new Customer
@@ -29,7 +29,7 @@ namespace MCBA_Web.Data
                     CustomerID = 2200,
                     Name = "Rodney Cocker",
                     Address = "456 Real Road",
-                    City = "Melbourne",
+                    Suburb = "Melbourne",
                     PostCode = "3005"
                 },
                 new Customer
@@ -62,7 +62,7 @@ namespace MCBA_Web.Data
                 new Account
                 {
                     AccountNumber = 4100,
-                    AccountType = AccountType.Saving,
+                    AccountType = AccountType.Savings,
                     CustomerID = 2100,
                     Balance = 100
                 },
@@ -76,7 +76,7 @@ namespace MCBA_Web.Data
                 new Account
                 {
                     AccountNumber = 4200,
-                    AccountType = AccountType.Saving,
+                    AccountType = AccountType.Savings,
                     CustomerID = 2200,
                     Balance = 500.95m
                 },

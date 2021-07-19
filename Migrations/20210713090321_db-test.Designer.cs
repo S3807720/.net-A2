@@ -4,14 +4,16 @@ using MCBA_Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MCBA_Web.Migrations
 {
     [DbContext(typeof(McbaContext))]
-    partial class McbaContextModelSnapshot : ModelSnapshot
+    [Migration("20210713090321_db-test")]
+    partial class dbtest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,7 +68,8 @@ namespace MCBA_Web.Migrations
                         .HasColumnType("nvarchar(4)");
 
                     b.Property<string>("State")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Suburb")
                         .HasMaxLength(40)
@@ -78,14 +81,6 @@ namespace MCBA_Web.Migrations
                     b.HasKey("CustomerID");
 
                     b.ToTable("Customers");
-
-                    b.HasCheckConstraint("CH_CustomerID", "len(CustomerID) = 4");
-
-                    b.HasCheckConstraint("CH_TFN", "len(TFN) = 11");
-
-                    b.HasCheckConstraint("CH_Postcode", "len(Postcode) = 4");
-
-                    b.HasCheckConstraint("CH_Mobile", "len(Mobile) = 12");
                 });
 
             modelBuilder.Entity("MCBA_Web.Models.Login", b =>

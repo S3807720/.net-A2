@@ -8,6 +8,7 @@ namespace MCBA_Web.Models
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Display(Name = "Account Number")]
+        [RegularExpression(@"^(\d{4})$", ErrorMessage = "Account Number must be 4 digits.")]
         public int AccountNumber { get; set; }
 
         [Required, StringLength(50)]
