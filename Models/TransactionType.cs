@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MCBA_Web.Models
+﻿namespace MCBA_Web.Models
 {
     public enum TransactionType
     {

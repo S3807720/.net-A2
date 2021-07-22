@@ -6,11 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MCBA_Web.Data;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace MCBA_Web
 {
     public class Startup
     {
+        private static readonly ILoggerFactory ConsoleLogger = 
+            LoggerFactory.Create(ApplicationBuilder => ApplicationBuilder.AddConsole());
         public Startup(IConfiguration configuration) => Configuration = configuration;
 
         private IConfiguration Configuration { get; }
@@ -24,6 +27,7 @@ namespace MCBA_Web
 
                 // Enable lazy loading.
                 options.UseLazyLoadingProxies();
+                options.UseLoggerFactory(ConsoleLogger);
             });
             //services.AddDistributedMemoryCache();
             services.AddDistributedSqlServerCache(options =>

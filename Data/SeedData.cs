@@ -93,7 +93,7 @@ namespace MCBA_Web.Data
             context.Transactions.AddRange(
                 new Transaction
                 {
-                    TransactionType = TransactionType.Deposit,
+                    TransactionType = (char)TransactionType.Deposit,
                     AccountNumber = 4100,
                     Amount = 100,
                     Comment = "Opening balance",
@@ -101,7 +101,7 @@ namespace MCBA_Web.Data
                 },
                 new Transaction
                 {
-                    TransactionType = TransactionType.Deposit,
+                    TransactionType = (char)TransactionType.Deposit,
                     AccountNumber = 4101,
                     Amount = 200,
                     Comment = "First deposit",
@@ -109,7 +109,7 @@ namespace MCBA_Web.Data
                 },
                 new Transaction
                 {
-                    TransactionType = TransactionType.Deposit,
+                    TransactionType = (char)TransactionType.Deposit,
                     AccountNumber = 4101,
                     Amount = 300,
                     Comment = "Second deposit",
@@ -117,7 +117,7 @@ namespace MCBA_Web.Data
                 },
                 new Transaction
                 {
-                    TransactionType = TransactionType.Deposit,
+                    TransactionType = (char)TransactionType.Deposit,
                     AccountNumber = 4200,
                     Amount = 500,
                     Comment = "Deposited $500",
@@ -125,7 +125,7 @@ namespace MCBA_Web.Data
                 },
                 new Transaction
                 {
-                    TransactionType = TransactionType.Deposit,
+                    TransactionType = (char)TransactionType.Deposit,
                     AccountNumber = 4200,
                     Amount = 0.95m,
                     Comment = "Deposited $0.95",
@@ -133,7 +133,7 @@ namespace MCBA_Web.Data
                 },
                 new Transaction
                 {
-                    TransactionType = TransactionType.Deposit,
+                    TransactionType = (char)TransactionType.Deposit,
                     AccountNumber = 4300,
                     Amount = 1250.50m,
                     Comment = null,

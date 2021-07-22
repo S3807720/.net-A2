@@ -22,7 +22,7 @@ namespace MCBA_Web.Controllers
         public CustomerController(McbaContext context) => _context = context;
 
         // Can add authorize attribute to actions.
-        //[AuthorizeCustomer]
+        [AuthorizeCustomer]
         public async Task<IActionResult> Index()
         {
             // Lazy loading.
@@ -37,9 +37,55 @@ namespace MCBA_Web.Controllers
             return View(customer);
         }
 
-        //public async Task<IActionResult> Deposit(int id) => View(await _context.Accounts.FindAsync(id));
-
         public async Task<IActionResult> Deposit(int id)
+        {
+            return View(
+                new DepositViewModel
+                {
+                    AccountNumber = id,
+                    Account = await _context.Accounts.FindAsync(id)
+                });
+        }
+        public bool verifyAmount(decimal amount)
+        {
+            if (amount <= 0)
+            {
+                ModelState.AddModelError(nameof(amount), "Amount must be positive.");
+                return false;
+            }
+            if (amount.HasMoreThanTwoDecimalPlaces())
+            {
+                ModelState.AddModelError(nameof(amount), "Amount cannot have more than 2 decimal places.");
+                return false;
+            }
+            return true;
+        }
+        [HttpPost]
+        public async Task<IActionResult> Deposit(DepositViewModel viewModel)
+        {
+            viewModel.Account = await _context.Accounts.FindAsync(viewModel.AccountNumber);
+
+            if (!verifyAmount(viewModel.Amount))
+            {
+                return View(viewModel);
+            }
+            // Note this code could be moved out of the controller, e.g., into the model or repository (design pattern).
+            viewModel.Account.Balance += viewModel.Amount;
+            viewModel.Account.Transactions.Add(
+                new Transaction
+                {
+                    TransactionType = (char)TransactionType.Deposit,
+                    Amount = viewModel.Amount,
+                    Comment = viewModel.Comment,
+                    TransactionTimeUtc = DateTime.UtcNow
+                });
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Withdraw(int id)
         {
             return View(
                 new DepositViewModel
@@ -50,30 +96,28 @@ namespace MCBA_Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Deposit(DepositViewModel viewModel)
+        public async Task<IActionResult> Withdraw(DepositViewModel viewModel)
         {
             viewModel.Account = await _context.Accounts.FindAsync(viewModel.AccountNumber);
 
-            // Note this code could be moved out of the controller, e.g., into the model, business objects, facade,
-            // validators, etc...
-            if (viewModel.Amount <= 0)
+            if (viewModel.Amount > viewModel.Account.Balance)
             {
-                ModelState.AddModelError(nameof(viewModel.Amount), "Amount must be positive.");
+                ModelState.AddModelError(nameof(viewModel.Amount), "Insufficient funds in account.");
                 return View(viewModel);
             }
-            if (viewModel.Amount.HasMoreThanTwoDecimalPlaces())
+            if (!verifyAmount(viewModel.Amount))
             {
-                ModelState.AddModelError(nameof(viewModel.Amount), "Amount cannot have more than 2 decimal places.");
                 return View(viewModel);
             }
 
             // Note this code could be moved out of the controller, e.g., into the model or repository (design pattern).
-            viewModel.Account.Balance += viewModel.Amount;
+            viewModel.Account.Balance -= viewModel.Amount;
             viewModel.Account.Transactions.Add(
                 new Transaction
                 {
-                    TransactionType = TransactionType.Deposit,
+                    TransactionType = (char)TransactionType.Withdraw,
                     Amount = viewModel.Amount,
+                    Comment = viewModel.Comment,
                     TransactionTimeUtc = DateTime.UtcNow
                 });
 
@@ -81,35 +125,6 @@ namespace MCBA_Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-/*
-        [HttpPost]
-        public async Task<IActionResult> Deposit(int id, decimal amount)
-        {
-            var account = await _context.Accounts.FindAsync(id);
 
-            if(amount <= 0)
-                ModelState.AddModelError(nameof(amount), "Amount must be positive.");
-            if(amount.HasMoreThanTwoDecimalPlaces())
-                ModelState.AddModelError(nameof(amount), "Amount cannot have more than 2 decimal places.");
-            if(!ModelState.IsValid)
-            {
-                ViewBag.Amount = amount;
-                return View(account);
-            }
-
-            // Note this code could be moved out of the controller, e.g., into the Model.
-            account.Balance += amount;
-            account.Transactions.Add(
-                new Transaction
-                {
-                    TransactionType = TransactionType.Deposit,
-                    Amount = amount,
-                    TransactionTimeUtc = DateTime.UtcNow
-                });
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
-        }*/
     }
 }

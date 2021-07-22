@@ -7,6 +7,11 @@ namespace MCBA_Web.Utilities
 {
     public static class MiscellaneousExtensionUtilities
     {
+
+        public static char ParseEnum(this string value)
+        {
+            return value[0];
+        }
         public static bool HasMoreThanNDecimalPlaces(this decimal value, int n) => decimal.Round(value, n) != value;
         public static bool HasMoreThanTwoDecimalPlaces(this decimal value) => value.HasMoreThanNDecimalPlaces(2);
 
