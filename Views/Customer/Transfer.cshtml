@@ -1,0 +1,34 @@
+﻿@model MCBA_Web.ViewModels.DepositViewModel
+@{
+    ViewData["Title"] = "Transfer";
+}
+
+<h1 class="display-4">Account Number @Model.AccountNumber (@Model.Account.AccountType)</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Transfer">
+            <div class="form-group">
+                <label asp-for="DestinationAccNumber" class="control-label"></label>
+                <input asp-for="DestinationAccNumber" class="form-control" 
+                       data-val="true" data-val-number="The field Destination Account must be a number."
+                       data-val-required="The Destination Account field is required." />
+                <span asp-validation-for="DestinationAccNumber" class="text-danger"></span>
+            </div>
+            <partial name="_AccountInputs" />
+
+
+            <div class="form-group">
+                <input type="submit" value="Transfer" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Accounts</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

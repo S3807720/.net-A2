@@ -15,7 +15,8 @@ namespace MCBA_Web.Models
         [Display(Name = "Type")]
         public AccountType AccountType { get; set; }
 
-        [StringLength(50)]
+        [StringLength(50), Display(Name = "Customer ID")]
+        [ForeignKey("Customer")]
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 

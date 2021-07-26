@@ -1,0 +1,49 @@
+﻿@model MCBA_Web.ViewModels.DepositViewModel
+@{
+    ViewData["Title"] = "Confirm";
+    var msg = "";
+    if (Model.Type == 'T') { msg = $"Transfer from Account Number {Model.AccountNumber}"; }
+    else if (Model.Type == 'D') { msg = $"Deposit to Account Number {Model.AccountNumber}"; }
+    else { msg = $"Withdraw from Account Number {Model.AccountNumber}."; }
+}
+
+<h1 class="display-4">Account Number @Model.AccountNumber (@Model.Account.AccountType)</h1>
+<h5>
+    Confirm @msg
+</h5>
+<form class="col-md-4" asp-action="Confirm">
+    <input type="hidden" asp-for="AccountNumber" />
+    <table>
+        @{
+            if (Model.DestinationAccNumber != null)
+            {
+                <tr class="table-row">
+                    <th asp-for="DestinationAccNumber" class="control-label">  Destination:   </th>
+                    <td>  @Model.DestinationAccNumber </td>
+                </tr>
+            }
+        }
+        <tr class="table-row">
+            <th asp-for="Amount" class="control-label">  Amount:   </th>
+            <td>  @Model.Amount </td>
+        </tr>
+        <tr class="table-row">
+            <th asp-for="Comment" class="control-label">  Comment:   </th>
+            <td>  @Model.Comment </td>
+        </tr>
+
+
+    </table>
+    <div class="form-group">
+        <input type="submit" value="Confirm" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-primary">Cancel</a>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to Accounts</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -27,7 +27,7 @@ namespace MCBA_Web
 
                 // Enable lazy loading.
                 options.UseLazyLoadingProxies();
-                options.UseLoggerFactory(ConsoleLogger);
+              //  options.UseLoggerFactory(ConsoleLogger);
             });
             //services.AddDistributedMemoryCache();
             services.AddDistributedSqlServerCache(options =>
