@@ -20,6 +20,7 @@
                 <td>@Html.DisplayFor(x => account.AccountType)</td>
                 <td>@Html.DisplayFor(x => account.Balance)</td>
                 <td>
+                    <input type="hidden" name="customerID" value="@account.AccountNumber" />
                     <a class="btn btn-primary"
                        asp-action="Deposit" asp-route-id="@account.AccountNumber">
                         Deposit
@@ -32,6 +33,11 @@
                        asp-action="Transfer" asp-route-id="@account.AccountNumber">
                         Transfer
                     </a>
+                    <a class="btn btn-primary"
+                       asp-action="Statements" asp-route-id="@account">
+                        View Transactions
+                    </a>
+
                 </td>
             </tr>
         }

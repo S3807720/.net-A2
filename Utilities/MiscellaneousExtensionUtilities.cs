@@ -16,7 +16,7 @@ namespace MCBA_Web.Utilities
         }
         public static bool HasMoreThanNDecimalPlaces(this decimal value, int n) => decimal.Round(value, n) != value;
         public static bool HasMoreThanTwoDecimalPlaces(this decimal value) => value.HasMoreThanNDecimalPlaces(2);
-
+        //https://www.talkingdotnet.com/store-complex-objects-in-asp-net-core-session/
         public static void SetObject(this ISession session, string key, object value)
         {
             session.SetString(key, JsonConvert.SerializeObject(value));

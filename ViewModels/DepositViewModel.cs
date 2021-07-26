@@ -1,7 +1,6 @@
 ﻿using MCBA_Web.Models;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MCBA_Web.ViewModels
 {

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MCBA_Web.Data;
 using MCBA_Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +33,7 @@ namespace MCBA_Web.Controllers
             // Login customer.
             HttpContext.Session.SetInt32(nameof(Customer.CustomerID), login.CustomerID);
             HttpContext.Session.SetString(nameof(Customer.Name), login.Customer.Name);
-
+            HttpContext.Session.SetString(nameof(login.LoginID), login.LoginID);
             return RedirectToAction("Index", "Customer");
         }
 

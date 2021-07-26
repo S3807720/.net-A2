@@ -8,7 +8,8 @@ using MCBA_Web.Utilities;
 using MCBA_Web.Filters;
 using MCBA_Web.ViewModels;
 using Newtonsoft.Json;
-using System.Web.Providers.Entities;
+using System.Linq;
+using X.PagedList;
 
 namespace MCBA_Web.Controllers
 {
@@ -16,6 +17,7 @@ namespace MCBA_Web.Controllers
     [AuthorizeCustomer]
     public class CustomerController : Controller
     {
+        private const string account = "Account";
         private readonly McbaContext _context;
 
         // ReSharper disable once PossibleInvalidOperationException
@@ -39,15 +41,6 @@ namespace MCBA_Web.Controllers
             return View(customer);
         }
 
-        public async Task<IActionResult> Deposit(int id)
-        {
-            return View(
-                new DepositViewModel
-                {
-                    AccountNumber = id,
-                    Account = await _context.Accounts.FindAsync(id)
-                });
-        }
         public bool verifyAmount(decimal amount)
         {
             if (amount <= 0)
@@ -62,6 +55,17 @@ namespace MCBA_Web.Controllers
             }
             return true;
         }
+
+        public async Task<IActionResult> Deposit(int id)
+        {
+            return View(
+                new DepositViewModel
+                {
+                    AccountNumber = id,
+                    Account = await _context.Accounts.FindAsync(id)
+                });
+        }
+     
         [HttpPost]
         public async Task<IActionResult> Deposit(DepositViewModel viewModel)
         {
@@ -72,21 +76,9 @@ namespace MCBA_Web.Controllers
             {
                 return View(viewModel);
             }
-            // Note this code could be moved out of the controller, e.g., into the model or repository (design pattern).
-            viewModel.Account.Balance += viewModel.Amount;
-            var trans =
-                new Transaction
-                {
-                    TransactionType = (char)TransactionType.Deposit,
-                    Amount = viewModel.Amount,
-                    Comment = viewModel.Comment,
-                    TransactionTimeUtc = DateTime.UtcNow
-                };
-            viewModel.Account.Transactions.Add(trans);
-
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            viewModel.Type = (char)TransactionType.Deposit;
+            HttpContext.Session.SetObject(account, viewModel);
+            return RedirectToAction(nameof(Confirm));
         }
 
         public async Task<IActionResult> Withdraw(int id)
@@ -113,20 +105,9 @@ namespace MCBA_Web.Controllers
             {
                 return View(viewModel);
             }
-            // Note this code could be moved out of the controller, e.g., into the model or repository (design pattern).
-            viewModel.Account.Balance -= viewModel.Amount;
-            var trans =
-                new Transaction
-                {
-                    TransactionType = (char)TransactionType.Withdraw,
-                    Amount = viewModel.Amount,
-                    Comment = viewModel.Comment,
-                    TransactionTimeUtc = DateTime.UtcNow
-                };
-            viewModel.Account.Transactions.Add(trans);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Index));
+            viewModel.Type = (char)TransactionType.Withdraw;
+            HttpContext.Session.SetObject(account, viewModel);
+            return RedirectToAction(nameof(Confirm));
         }
 
         public async Task<IActionResult> Transfer(int id)
@@ -163,74 +144,89 @@ namespace MCBA_Web.Controllers
                 return View(viewModel);
             }
             viewModel.Type = (char)TransactionType.Transfer;
-            //var trans =
-            //    new Transaction
-            //    {
-            //        TransactionType = (char)TransactionType.Transfer,
-            //        DestinationAccountNumber = viewModel.DestinationAccNumber,
-            //        Amount = viewModel.Amount,
-            //        Comment = viewModel.Comment,
-            //        TransactionTimeUtc = DateTime.UtcNow
-            //    };
-            //HttpContext.Session.SetObject("transaction", trans);
-            // viewModel.Account.Transactions.Add(trans);
-            HttpContext.Session.SetObject("DepositViewModel", viewModel);
-            HttpContext.Session.SetString("type", "Transfer");
+            HttpContext.Session.SetObject(account, viewModel);
             return RedirectToAction(nameof(Confirm));
         }
         public async Task addTransferTransaction(DepositViewModel viewModel)
         {
-            Account dest = _context.Accounts.Find(viewModel.DestinationAccNumber);
+            var dest = await _context.Accounts.FindAsync(viewModel.DestinationAccNumber);
             dest.Transactions.Add(
                 new Transaction
                 {
-                    TransactionType = (char)viewModel.Type,
+                    TransactionType = viewModel.Type,
                     Amount = viewModel.Amount,
                     Comment = viewModel.Comment,
                     TransactionTimeUtc = DateTime.UtcNow
                 });
             dest.Balance += viewModel.Amount;
-
-            // Note this code could be moved out of the controller, e.g., into the model or repository (design pattern).
-
-            await _context.SaveChangesAsync();
         }
 
-        public async Task addTransaction(DepositViewModel viewModel, char type)
+        public async Task addTransaction(DepositViewModel viewModel)
         {
             var acc = await _context.Accounts.FindAsync(viewModel.AccountNumber);
-            var trans =
+            acc.Transactions.Add(
                 new Transaction
                 {
-                    TransactionType = type,
+                    TransactionType = viewModel.Type,
                     Amount = viewModel.Amount,
                     DestinationAccountNumber = viewModel.DestinationAccNumber,
                     Comment = viewModel.Comment,
                     TransactionTimeUtc = DateTime.UtcNow
-                };
-            acc.Transactions.Add(trans);
-            _ = viewModel.Type == 'D' ? acc.Balance += viewModel.Amount : acc.Balance -= viewModel.Amount;
+                });
+            if (viewModel.Type == 'D') 
+                acc.Balance += viewModel.Amount; 
+            else 
+                acc.Balance -= viewModel.Amount;
         }
         public async Task<IActionResult> Confirm(int id)
         {
-            DepositViewModel dvm = HttpContext.Session.GetObject<DepositViewModel>("depositViewModel");
+            DepositViewModel dvm = HttpContext.Session.GetObject<DepositViewModel>(account);
             dvm.Account = await _context.Accounts.FindAsync(dvm.AccountNumber);
             return View(dvm);
         }
         [HttpPost]
         public async Task<IActionResult> Confirm()
         {
-            DepositViewModel viewModel = HttpContext.Session.GetObject<DepositViewModel>("DepositViewModel");
-
-            char type = HttpContext.Session.GetString("type")[0];
-            await addTransaction(viewModel, type);
-            if (type == (char)TransactionType.Transfer)
+            DepositViewModel viewModel = HttpContext.Session.GetObject<DepositViewModel>(account);
+            await addTransaction(viewModel);
+            if (viewModel.Type == (char)TransactionType.Transfer)
             {
                 await addTransferTransaction(viewModel);
             }
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ViewStatements(Account acc)
+        {
+           // var customer = acc;
+            if (acc == null)
+                return NotFound();
+
+            // Store a complex object in the session via JSON serialisation.
+            var accountJson = JsonConvert.SerializeObject(acc);
+           // HttpContext.Session.SetString(account, accountJson);
+            HttpContext.Session.SetObject(account, acc);
+            return RedirectToAction(nameof(Statements));
+        }
+
+        public async Task<IActionResult> Statements(int page = 1)
+        {
+            var acc = HttpContext.Session.GetObject<Account>(account);
+            if (acc == null)
+                return RedirectToAction(nameof(Index)); // OR return BadRequest();
+
+            // Retrieve complex object from the session via JSON deserialisation.
+           // var acc = JsonConvert.DeserializeObject<Transaction>(accountJson);
+            ViewBag.Account = acc;
+            // Page the orders, maximum of 3 per page.
+            const int pageSize = 4;
+            var pagedList = await _context.Transactions.Where(x => x.AccountNumber == acc.AccountNumber).
+                 OrderBy(x => x.TransactionTimeUtc).ToPagedListAsync(page, pageSize);
+            //var pagedList = await acc.Transactions.OrderBy(x => x.TransactionTimeUtc).ToPagedListAsync((int)page, pageSize);
+            return View(pagedList);
         }
 
     }

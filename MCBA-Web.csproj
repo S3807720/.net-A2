@@ -20,11 +20,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="SimpleHashing" Version="2.0.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Profile\" />
-    <Folder Include="Views\Statements\" />
+    <PackageReference Include="X.PagedList" Version="8.1.0" />
+    <PackageReference Include="X.PagedList.Mvc" Version="8.0.7" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.1.0" />
   </ItemGroup>
 
 </Project>

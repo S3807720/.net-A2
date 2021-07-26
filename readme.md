@@ -1,8 +1,8 @@
-Withdraw/depo/transfer -> confirm -> update mcbacontext
+Withdraw/depo/transfer -> confirm -> update mcbacontext /
 
-Statement -> view balance of specific account and pages of 4 transactions ordered by recent.
+Statement -> view balance of specific account and pages of 4 transactions ordered by recent. /
 
-My profile -> show details and allow editing name, tfn, addr, suburb, state, postcode, mobile
+My profile -> show details and allow editing name, tfn, addr, suburb, state, postcode, mobile /
 
 Add record type variables somehow. probably in transactions as these can't be removed.
 

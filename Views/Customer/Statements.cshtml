@@ -1,0 +1,44 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IPagedList<Transaction>
+@{
+    ViewData["Title"] = "Statements";
+    var Account = (Account)ViewBag.Account;
+}
+
+<div>
+    <h1>Transactions for Account @Account.AccountNumber</h1>
+    <table class="table table-striped table-dark text-white">
+        <tr>
+            <th>@Html.DisplayNameFor(x => x[0].TransactionID)</th>
+            <th>@Html.DisplayNameFor(x => x[0].TransactionType)</th>
+            <th>@Html.DisplayNameFor(x => x[0].DestinationAccountNumber)</th>
+            <th>@Html.DisplayNameFor(x => x[0].Amount)</th>
+            <th>@Html.DisplayNameFor(x => x[0].Comment)</th>
+            <th>@Html.DisplayNameFor(x => x[0].TransactionTimeUtc)</th>
+        </tr>
+        @foreach (var tran in Model)
+        {
+            <tr>
+                <th>@Html.DisplayFor(x => tran.TransactionID)</th>
+                <th>@Html.DisplayFor(x => tran.TransactionType)</th>
+                <th>@Html.DisplayFor(x => tran.DestinationAccountNumber)</th>
+                <th>@Html.DisplayFor(x => tran.Amount)</th>
+                <th>@Html.DisplayFor(x => tran.Comment)</th>
+                <th>@Html.DisplayFor(x => tran.TransactionTimeUtc)</th>
+            </tr>
+        }
+    </table>
+
+    @Html.PagedListPager(Model, page => Url.Action("Statements", new { page }),
+        new PagedListRenderOptions
+            {
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+    })
+</div>
+
+<div>
+    <a asp-action="Index">Back to Customers</a>
+</div>

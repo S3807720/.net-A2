@@ -6,8 +6,10 @@ namespace MCBA_Web.Models
 {
     public class Transaction
     {
+        [Display(Name ="Transaction ID")]
         public int TransactionID { get; set; }
         [Column(TypeName="nvarchar(1)")]
+        [Display(Name = "Transaction Type")]
         public char TransactionType { get; set; }
 
         [ForeignKey("Account")]
@@ -15,6 +17,7 @@ namespace MCBA_Web.Models
         public virtual Account Account { get; set; }
 
         [ForeignKey("DestinationAccount")]
+        [Display(Name = "Destination Account")]
         public int? DestinationAccountNumber { get; set; }
         public virtual Account DestinationAccount { get; set; }
 
@@ -24,6 +27,7 @@ namespace MCBA_Web.Models
         [StringLength(30)]
         public string Comment { get; set; }
         [Required]
+        [Display(Name = "Transaction Date")]
         public DateTime TransactionTimeUtc { get; set; }
     }
 }
