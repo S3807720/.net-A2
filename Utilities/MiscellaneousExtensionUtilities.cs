@@ -9,6 +9,13 @@ namespace MCBA_Web.Utilities
 {
     public static class MiscellaneousExtensionUtilities
     {
+        public static int Minimum_Checking = 200;
+        public static int Minimum_Savings = 0;
+        public static int Open_Checking = 500;
+        public static int Open_Savings = 100;
+        public static double Withdraw_Fee = 0.10;
+        public static double Transfer_Fee = 0.20;
+        public static int Max_Free_Transfers = 4;
 
         public static char ParseEnum(this string value)
         {
