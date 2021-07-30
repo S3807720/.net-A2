@@ -13,3 +13,8 @@ occurs the error should be conveyed to the user on the BillPay page with options
 the error, for example cancel, reschedule, or try again, etc…
 
 HD stuff in doc... just login and admin stuff
+
+
+Records have been utilized for transactions, as these should not be ever changed, and refunds and such would be new transactions.
+This place is a good choice, as well as being able to duplicate the original transaction and adjust the 
+destination and account number associated with the 'with' command.
