@@ -18,40 +18,41 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav">
-                        @{
-                            var isLoggedIn = Context.Session.GetInt32(nameof(Customer.CustomerID)).HasValue;
-                        }
-                        @if (isLoggedIn)
-                        {
-                            <li class="nav-item">
-                                <span class="nav-link">
-                                    Welcome, @Context.Session.GetString(nameof(Customer.Name))
-                                </span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Profile" asp-action="Index">My Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Login" asp-action="Logout">Logout</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Login" asp-action="Login">Login</a>
-                            </li>
-                        }
+                        <partial name="_LoginPartial" />
+                        @*@{
+            var isLoggedIn = Context.Session.GetInt32(nameof(Customer.CustomerID)).HasValue;
+        }
+        @if (isLoggedIn)
+        {
+            <li class="nav-item">
+                <span class="nav-link">
+                    Welcome, @Context.Session.GetString(nameof(Customer.Name))
+                </span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Profile" asp-action="Index">My Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Login" asp-action="Logout">Logout</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Login" asp-action="Login">Login</a>
+            </li>
+        }*@
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @if (isLoggedIn)
+                        @*@if (isLoggedIn)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Customer" asp-action="Index">My Accounts</a>
                             </li>
-                        }
+                        }*@
                     </ul>
                 </div>
             </div>

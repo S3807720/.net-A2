@@ -8,7 +8,6 @@ using MCBA_Web.Data;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.
 
 namespace MCBA_Web
 {
@@ -44,6 +43,7 @@ namespace MCBA_Web
                 options.IdleTimeout = TimeSpan.FromDays(7);
             });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<McbaContext>();
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -62,9 +62,10 @@ namespace MCBA_Web
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.User.RequireUniqueEmail = false;
             });
-
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
@@ -77,6 +78,7 @@ namespace MCBA_Web
             });
 
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +92,7 @@ namespace MCBA_Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
             app.UseRouting();
@@ -100,7 +103,12 @@ namespace MCBA_Web
             app.UseSession();
             app.UseHttpsRedirection();
 
-            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+            });
+
         }
     }
 }

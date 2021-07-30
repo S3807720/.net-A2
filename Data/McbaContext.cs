@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MCBA_Web.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace MCBA_Web.Data
 {
-    public class McbaContext : DbContext
+    public class McbaContext : IdentityDbContext<IdentityUser>
     {
         public McbaContext(DbContextOptions<McbaContext> options) : base(options)
         { }
