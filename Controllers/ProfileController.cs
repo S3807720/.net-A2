@@ -38,6 +38,7 @@ namespace MCBA_Web.Controllers
             customer.PostCode = cust.PostCode;
             customer.Name = cust.Name;
             customer.Mobile = cust.Mobile;
+            HttpContext.Session.SetString(nameof(Customer.Name), customer.Name);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

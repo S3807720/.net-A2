@@ -11,11 +11,11 @@ namespace MCBA_Web.Models
         [RegularExpression(@"^(\d{4})$", ErrorMessage = "Account Number must be 4 digits.")]
         public int AccountNumber { get; set; }
 
-        [Required, StringLength(50)]
+        [Required, StringLength(1)]
         [Display(Name = "Type")]
         public AccountType AccountType { get; set; }
 
-        [StringLength(50), Display(Name = "Customer ID")]
+        [StringLength(4), Display(Name = "Customer ID")]
         [ForeignKey("Customer")]
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }

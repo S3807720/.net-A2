@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MCBA_Web.Models
 {
-    public class Transaction
+    public record Transaction
     {
         [Display(Name ="Transaction ID")]
         public int TransactionID { get; set; }

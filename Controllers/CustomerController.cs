@@ -65,7 +65,7 @@ namespace MCBA_Web.Controllers
                     Account = await _context.Accounts.FindAsync(id)
                 });
         }
-     
+
         [HttpPost]
         public async Task<IActionResult> Deposit(DepositViewModel viewModel)
         {
@@ -147,36 +147,32 @@ namespace MCBA_Web.Controllers
             HttpContext.Session.SetObject(account, viewModel);
             return RedirectToAction(nameof(Confirm));
         }
-        public async Task addTransferTransaction(DepositViewModel viewModel)
-        {
-            var dest = await _context.Accounts.FindAsync(viewModel.DestinationAccNumber);
-            dest.Transactions.Add(
-                new Transaction
-                {
-                    TransactionType = viewModel.Type,
-                    Amount = viewModel.Amount,
-                    Comment = viewModel.Comment,
-                    TransactionTimeUtc = DateTime.UtcNow
-                });
-            dest.Balance += viewModel.Amount;
-        }
 
         public async Task addTransaction(DepositViewModel viewModel)
         {
             var acc = await _context.Accounts.FindAsync(viewModel.AccountNumber);
-            acc.Transactions.Add(
-                new Transaction
+            var trans = new Transaction
+            {
+                TransactionType = viewModel.Type,
+                Amount = viewModel.Amount,
+                DestinationAccountNumber = viewModel.DestinationAccNumber,
+                Comment = viewModel.Comment,
+                TransactionTimeUtc = DateTime.UtcNow
+            };
+            acc.Transactions.Add(trans);
+            if (viewModel.Type == 'D')
+                acc.Balance += viewModel.Amount;
+            else {
+                if (viewModel.Type == 'T')
                 {
-                    TransactionType = viewModel.Type,
-                    Amount = viewModel.Amount,
-                    DestinationAccountNumber = viewModel.DestinationAccNumber,
-                    Comment = viewModel.Comment,
-                    TransactionTimeUtc = DateTime.UtcNow
-                });
-            if (viewModel.Type == 'D') 
-                acc.Balance += viewModel.Amount; 
-            else 
-                acc.Balance -= viewModel.Amount;
+                    var dest = await _context.Accounts.FindAsync(viewModel.DestinationAccNumber);
+                    dest.Transactions.Add(trans with {
+                        DestinationAccountNumber = null,
+                        AccountNumber = dest.AccountNumber});
+                    dest.Balance += trans.Amount;
+                } 
+                acc.Balance -= trans.Amount;
+            }
         }
         public async Task<IActionResult> Confirm(int id)
         {
@@ -189,10 +185,6 @@ namespace MCBA_Web.Controllers
         {
             DepositViewModel viewModel = HttpContext.Session.GetObject<DepositViewModel>(account);
             await addTransaction(viewModel);
-            if (viewModel.Type == (char)TransactionType.Transfer)
-            {
-                await addTransferTransaction(viewModel);
-            }
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));

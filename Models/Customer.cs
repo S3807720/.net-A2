@@ -8,14 +8,14 @@ namespace MCBA_Web.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CustomerID { get; set; }
-        [Required, StringLength(50)]
+        [Required, MaxLength(50)]
         public string Name { get; set; }
         [RegularExpression(@"^(\d{11})$", ErrorMessage = "Tax File Number must be of 11 digits.")]
         public string TFN { get; set; }
-        [StringLength(50)]
+        [MaxLength(50)]
         public string Address { get; set; }
 
-        [StringLength(40)]
+        [MaxLength(40)]
         public string Suburb { get; set; }
         [StringLength(3)]
         public string State { get; set; }
@@ -23,8 +23,8 @@ namespace MCBA_Web.Models
         [StringLength(4)]
         public string PostCode { get; set; }
 
-        [RegularExpression(@"^(\d{12})$", ErrorMessage = "Number must be of the format 04xx xxx xxx.")]
-        [StringLength(12)]
+        [RegularExpression(@"^(\d{11})$", ErrorMessage = "Number must be of the format 04xx xxx xxx.")]
+        [StringLength(11)]
         [DataType(DataType.PhoneNumber)]
         public string Mobile { get; set; }
         public virtual List<Account> Accounts { get; set; }

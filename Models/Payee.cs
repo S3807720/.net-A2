@@ -21,7 +21,8 @@ namespace MCBA_Web.Models
         [Required, StringLength(4)]
         public string PostCode { get; set; }
 
-        [Required, RegularExpression(@"^(\d{12})$", ErrorMessage = "Number must be of the format 04xx xxxx xxxx.")]
+        [RegularExpression(@"^(\d{11})$", ErrorMessage = "Number must be of the format 04xx xxx xxx.")]
+        [StringLength(11)]
         [DataType(DataType.PhoneNumber)]
         public string Mobile { get; set; }
     }
