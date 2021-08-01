@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MCBA-Web", "MCBA-Web.csproj", "{C2420B29-2344-428E-8197-F1BDCB1FAB8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCBA-WebAPI", "MCBA-WebAPI.csproj", "{A2602D39-280E-465B-AA04-DDCFF4FB207C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2602D39-280E-465B-AA04-DDCFF4FB207C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2602D39-280E-465B-AA04-DDCFF4FB207C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2602D39-280E-465B-AA04-DDCFF4FB207C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2602D39-280E-465B-AA04-DDCFF4FB207C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {29C0B57C-2F0B-41EB-A4FA-DF846ECA4E4B}
+		SolutionGuid = {2EF6EF10-E728-4DFF-BC77-85E44E63E6C8}
 	EndGlobalSection
 EndGlobal

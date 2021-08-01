@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MCBA-Web", "MCBA-Web.csproj", "{C2420B29-2344-428E-8197-F1BDCB1FAB8A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MCBA-WebAPI", "..\MCBA-WebAPI\MCBA-WebAPI.csproj", "{56B70625-C44C-4E9F-BB6A-F765EA9F7115}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCBA-Models", "..\MCBA-Models\MCBA-Models.csproj", "{49CE2010-1C56-4CE1-ABBA-8692747E3547}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2420B29-2344-428E-8197-F1BDCB1FAB8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56B70625-C44C-4E9F-BB6A-F765EA9F7115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56B70625-C44C-4E9F-BB6A-F765EA9F7115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56B70625-C44C-4E9F-BB6A-F765EA9F7115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56B70625-C44C-4E9F-BB6A-F765EA9F7115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49CE2010-1C56-4CE1-ABBA-8692747E3547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49CE2010-1C56-4CE1-ABBA-8692747E3547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49CE2010-1C56-4CE1-ABBA-8692747E3547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49CE2010-1C56-4CE1-ABBA-8692747E3547}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29C0B57C-2F0B-41EB-A4FA-DF846ECA4E4B}
+	EndGlobalSection
+EndGlobal
