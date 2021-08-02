@@ -17,7 +17,7 @@ namespace MCBA_Models.Models
 
         [MaxLength(40)]
         public string Suburb { get; set; }
-        [StringLength(3)]
+        [MaxLength(3)][MinLength(2)]
         public string State { get; set; }
 
         [StringLength(4)]

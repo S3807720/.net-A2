@@ -139,7 +139,50 @@ namespace MCBA_Web.Data
                     Comment = null,
                     TransactionTimeUtc = DateTime.ParseExact("19/05/2021 10:00:00 PM", format, null)
                 });
-
+            context.Payees.AddRange(
+                new Payee
+                {
+                    Name = "Bobby Lee Cars",
+                    Address = "145 Fake St",
+                    Suburb = "Wheresville",
+                    State = "NSW",
+                    PostCode = "1234",
+                    Phone = "(61) 1234 5678"
+                },
+                new Payee
+                {
+                    Name = "Jame Lee Brooms",
+                    Address = "15 St St",
+                    Suburb = "Howsville",
+                    State = "VIC",
+                    PostCode = "3343",
+                    Phone = "(31) 4567 1234"
+                });
+            context.BillPays.AddRange(
+                new BillPay
+                {
+                    AccountNumber = 4100,
+                    PayeeID = 1,
+                    Amount = 5,
+                    ScheduleTimeUtc = DateTime.UtcNow,
+                    Period = (char) Period.Monthly
+                },
+                new BillPay
+                {
+                    AccountNumber = 4101,
+                    PayeeID = 1,
+                    Amount = 7.5m,
+                    ScheduleTimeUtc = DateTime.UtcNow,
+                    Period = (char)Period.Monthly
+                },
+                new BillPay
+                {
+                    AccountNumber = 4100,
+                    PayeeID = 2,
+                    Amount = 5.2m,
+                    ScheduleTimeUtc = DateTime.UtcNow,
+                    Period = (char)Period.Monthly
+                });
             context.SaveChanges();
         }
     }

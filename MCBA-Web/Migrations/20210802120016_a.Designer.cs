@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MCBA_Web.Migrations
 {
     [DbContext(typeof(McbaContext))]
-    [Migration("20210713092333_db-test2")]
-    partial class dbtest2
+    [Migration("20210802120016_a")]
+    partial class a
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,20 +21,20 @@ namespace MCBA_Web.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("MCBA_Web.Models.Account", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Account", b =>
                 {
                     b.Property<int>("AccountNumber")
                         .HasColumnType("int");
 
                     b.Property<int>("AccountType")
-                        .HasMaxLength(50)
+                        .HasMaxLength(1)
                         .HasColumnType("int");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("money");
 
                     b.Property<int>("CustomerID")
-                        .HasMaxLength(50)
+                        .HasMaxLength(4)
                         .HasColumnType("int");
 
                     b.HasKey("AccountNumber");
@@ -46,7 +46,35 @@ namespace MCBA_Web.Migrations
                     b.HasCheckConstraint("CH_Account_Balance", "Balance >= 0");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Customer", b =>
+            modelBuilder.Entity("MCBA_Models.Models.BillPay", b =>
+                {
+                    b.Property<int>("BillPayID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountNumber")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("money");
+
+                    b.Property<int>("PayeeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Period")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
+
+                    b.Property<DateTime>("ScheduleTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BillPayID");
+
+                    b.ToTable("BillPays");
+                });
+
+            modelBuilder.Entity("MCBA_Models.Models.Customer", b =>
                 {
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
@@ -55,12 +83,9 @@ namespace MCBA_Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("City")
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
                     b.Property<string>("Mobile")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -75,6 +100,10 @@ namespace MCBA_Web.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
+                    b.Property<string>("Suburb")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
                     b.Property<string>("TFN")
                         .HasColumnType("nvarchar(max)");
 
@@ -88,14 +117,18 @@ namespace MCBA_Web.Migrations
 
                     b.HasCheckConstraint("CH_Postcode", "len(Postcode) = 4");
 
-                    b.HasCheckConstraint("CH_Mobile", "len(Mobile) = 12");
+                    b.HasCheckConstraint("CH_Mobile", "len(Mobile) = 11");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Login", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Login", b =>
                 {
                     b.Property<string>("LoginID")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(8)
                         .HasColumnType("nchar(8)");
+
+                    b.Property<bool>("CanLogin")
+                        .HasColumnType("bit");
 
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
@@ -116,7 +149,47 @@ namespace MCBA_Web.Migrations
                     b.HasCheckConstraint("CH_Login_PasswordHash", "len(PasswordHash) = 64");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Transaction", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Payee", b =>
+                {
+                    b.Property<int>("PayeeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Mobile")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PostCode")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("Suburb")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("PayeeID");
+
+                    b.ToTable("Payees");
+                });
+
+            modelBuilder.Entity("MCBA_Models.Models.Transaction", b =>
                 {
                     b.Property<int>("TransactionID")
                         .ValueGeneratedOnAdd()
@@ -139,8 +212,9 @@ namespace MCBA_Web.Migrations
                     b.Property<DateTime>("TransactionTimeUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1)");
 
                     b.HasKey("TransactionID");
 
@@ -153,9 +227,9 @@ namespace MCBA_Web.Migrations
                     b.HasCheckConstraint("CH_Transaction_Amount", "Amount > 0");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Account", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Account", b =>
                 {
-                    b.HasOne("MCBA_Web.Models.Customer", "Customer")
+                    b.HasOne("MCBA_Models.Models.Customer", "Customer")
                         .WithMany("Accounts")
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -164,9 +238,9 @@ namespace MCBA_Web.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Login", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Login", b =>
                 {
-                    b.HasOne("MCBA_Web.Models.Customer", "Customer")
+                    b.HasOne("MCBA_Models.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -175,15 +249,15 @@ namespace MCBA_Web.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Transaction", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Transaction", b =>
                 {
-                    b.HasOne("MCBA_Web.Models.Account", "Account")
+                    b.HasOne("MCBA_Models.Models.Account", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MCBA_Web.Models.Account", "DestinationAccount")
+                    b.HasOne("MCBA_Models.Models.Account", "DestinationAccount")
                         .WithMany()
                         .HasForeignKey("DestinationAccountNumber");
 
@@ -192,12 +266,12 @@ namespace MCBA_Web.Migrations
                     b.Navigation("DestinationAccount");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Account", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Account", b =>
                 {
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("MCBA_Web.Models.Customer", b =>
+            modelBuilder.Entity("MCBA_Models.Models.Customer", b =>
                 {
                     b.Navigation("Accounts");
                 });
