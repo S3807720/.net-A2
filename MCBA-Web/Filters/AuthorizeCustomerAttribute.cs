@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using MCBA_Web.Models;
+using MCBA_Models.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 

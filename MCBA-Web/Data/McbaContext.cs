@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MCBA_Web.Models;
+using MCBA_Models.Models;
 
 namespace MCBA_Web.Data
 {

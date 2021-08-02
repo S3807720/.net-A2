@@ -1,11 +1,10 @@
 ﻿using MCBA_Web.Data;
 using MCBA_Web.Filters;
-using MCBA_Web.Models;
+using MCBA_Models.Models;
 using MCBA_Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleHashing;
-using System;
 using System.Threading.Tasks;
 
 namespace MCBA_Web.Controllers

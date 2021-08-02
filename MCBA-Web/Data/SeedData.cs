@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using MCBA_Web.Models;
+using MCBA_Models.Models;
 
 namespace MCBA_Web.Data
 {
@@ -41,19 +41,19 @@ namespace MCBA_Web.Data
             context.Logins.AddRange(
                 new Login
                 {
-                    LoginID = "12345678",
+                    LoginID = 12345678,
                     CustomerID = 2100,
                     PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2"
                 },
                 new Login
                 {
-                    LoginID = "38074569",
+                    LoginID = 38074569,
                     CustomerID = 2200,
                     PasswordHash = "EehwB3qMkWImf/fQPlhcka6pBMZBLlPWyiDW6NLkAh4ZFu2KNDQKONxElNsg7V04"
                 },
                 new Login
                 {
-                    LoginID = "17963428",
+                    LoginID = 17963428,
                     CustomerID = 2300,
                     PasswordHash = "LuiVJWbY4A3y1SilhMU5P00K54cGEvClx5Y+xWHq7VpyIUe5fe7m+WeI0iwid7GE"
                 });

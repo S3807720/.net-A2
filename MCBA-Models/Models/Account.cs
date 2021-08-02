@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
 
 namespace MCBA_Models.Models
 {
@@ -25,5 +27,6 @@ namespace MCBA_Models.Models
         public decimal Balance { get; set; }
 
         public virtual List<Transaction> Transactions { get; set; }
+
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MCBA_Web.Data;
-using MCBA_Web.Models;
+using MCBA_Models.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,7 @@ namespace MCBA_Web.Controllers
         public IActionResult Login() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Login(string loginID, string password)
+        public async Task<IActionResult> Login(int loginID, string password)
         {
             var login = await _context.Logins.FindAsync(loginID);
             if(login == null || !PBKDF2.Verify(login.PasswordHash, password))
@@ -33,7 +32,7 @@ namespace MCBA_Web.Controllers
             // Login customer.
             HttpContext.Session.SetInt32(nameof(Customer.CustomerID), login.CustomerID);
             HttpContext.Session.SetString(nameof(Customer.Name), login.Customer.Name);
-            HttpContext.Session.SetString(nameof(login.LoginID), login.LoginID);
+            HttpContext.Session.SetInt32(nameof(login.LoginID), login.LoginID);
             return RedirectToAction("Index", "Customer");
         }
 

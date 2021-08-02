@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using MCBA_Models.Models;
 using MCBA_WebAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace MCBA_Web.Data
 {
@@ -10,10 +11,11 @@ namespace MCBA_Web.Data
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            var context = serviceProvider.GetRequiredService<McbaContext>();
-
+            //var context = serviceProvider.GetRequiredService<McbaContext>();
+            using var context = new McbaContext(
+                serviceProvider.GetRequiredService<DbContextOptions<McbaContext>>());
             // Look for customers.
-            if(context.Customers.Any())
+            if (context.Customers.Any())
                 return; // DB has already been seeded.
 
             context.Customers.AddRange(
@@ -23,7 +25,7 @@ namespace MCBA_Web.Data
                     Name = "Matthew Bolger",
                     Address = "123 Fake Street",
                     Suburb = "Melbourne",
-                    PostCode = "3000"
+                    PostCode = "3000",
                 },
                 new Customer
                 {
@@ -44,20 +46,23 @@ namespace MCBA_Web.Data
                 {
                     LoginID = 12345678,
                     CustomerID = 2100,
-                    PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2"
+                    PasswordHash = "YBNbEL4Lk8yMEWxiKkGBeoILHTU7WZ9n8jJSy8TNx0DAzNEFVsIVNRktiQV+I8d2",
+                    CanLogin = true
                 },
                 new Login
                 {
                     LoginID = 38074569,
                     CustomerID = 2200,
-                    PasswordHash = "EehwB3qMkWImf/fQPlhcka6pBMZBLlPWyiDW6NLkAh4ZFu2KNDQKONxElNsg7V04"
+                    PasswordHash = "EehwB3qMkWImf/fQPlhcka6pBMZBLlPWyiDW6NLkAh4ZFu2KNDQKONxElNsg7V04",
+                    CanLogin = true
                 },
                 new Login
                 {
                     LoginID = 17963428,
                     CustomerID = 2300,
-                    PasswordHash = "LuiVJWbY4A3y1SilhMU5P00K54cGEvClx5Y+xWHq7VpyIUe5fe7m+WeI0iwid7GE"
-                });
+                    PasswordHash = "LuiVJWbY4A3y1SilhMU5P00K54cGEvClx5Y+xWHq7VpyIUe5fe7m+WeI0iwid7GE",
+                    CanLogin = true
+                }); ;
 
             context.Accounts.AddRange(
                 new Account

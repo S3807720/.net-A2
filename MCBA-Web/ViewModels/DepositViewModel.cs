@@ -1,4 +1,4 @@
-﻿using MCBA_Web.Models;
+﻿using MCBA_Models.Models;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 

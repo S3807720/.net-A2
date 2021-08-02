@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MCBA_Web.Data;
-using MCBA_Web.Models;
+using MCBA_Models.Models;
 using MCBA_Web.Utilities;
 using MCBA_Web.Filters;
 using MCBA_Web.ViewModels;
