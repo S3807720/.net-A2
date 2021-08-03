@@ -165,7 +165,8 @@ namespace MCBA_Web.Data
                     PayeeID = 1,
                     Amount = 5,
                     ScheduleTimeUtc = DateTime.UtcNow,
-                    Period = (char) Period.Monthly
+                    Period = (char) Period.Monthly,
+                    Status = ConstantVals.Failed
                 },
                 new BillPay
                 {
@@ -173,15 +174,44 @@ namespace MCBA_Web.Data
                     PayeeID = 1,
                     Amount = 7.5m,
                     ScheduleTimeUtc = DateTime.UtcNow,
-                    Period = (char)Period.Monthly
+                    Period = (char)Period.Monthly,
+                    Status = ConstantVals.Failed
                 },
+                 new BillPay
+                 {
+                     AccountNumber = 4101,
+                     PayeeID = 1,
+                     Amount = 73.5m,
+                     ScheduleTimeUtc = DateTime.UtcNow,
+                     Period = (char)Period.OneOff,
+                     Status = ConstantVals.Failed
+                 },
+                 new BillPay
+                 {
+                     AccountNumber = 4100,
+                     PayeeID = 1,
+                     Amount = 753.5m,
+                     ScheduleTimeUtc = DateTime.UtcNow,
+                     Period = (char)Period.OneOff,
+                     Status = ConstantVals.Failed
+                 },
+                 new BillPay
+                 {
+                     AccountNumber = 4101,
+                     PayeeID = 2,
+                     Amount = 45.29m,
+                     ScheduleTimeUtc = DateTime.UtcNow,
+                     Period = (char)Period.Annually,
+                     Status = ConstantVals.Failed
+                 },
                 new BillPay
                 {
                     AccountNumber = 4100,
                     PayeeID = 2,
                     Amount = 5.2m,
                     ScheduleTimeUtc = DateTime.UtcNow,
-                    Period = (char)Period.Monthly
+                    Period = (char)Period.Monthly,
+                    Status = ConstantVals.Paid
                 });
             context.SaveChanges();
         }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using MCBA_Web.Data;
 using System;
 using Microsoft.Extensions.Logging;
+using Mcba_Web.BackgroundServices;
 
 namespace MCBA_Web
 {
@@ -25,11 +26,11 @@ namespace MCBA_Web
             {
                 options.UseSqlServer(Configuration.GetConnectionString(nameof(McbaContext)));
 
-                // Enable lazy loading.
+                
                 options.UseLazyLoadingProxies();
-              //  options.UseLoggerFactory(ConsoleLogger);
+             
             });
-            //services.AddDistributedMemoryCache();
+            
             services.AddDistributedSqlServerCache(options =>
             {
                 options.ConnectionString = Configuration.GetConnectionString(nameof(McbaContext));
@@ -41,7 +42,7 @@ namespace MCBA_Web
                 options.Cookie.IsEssential = true;
                 options.IdleTimeout = TimeSpan.FromDays(7);
             });
-
+            services.AddHostedService<BillPayBackgroundService>();
             services.AddControllersWithViews();
         }
 

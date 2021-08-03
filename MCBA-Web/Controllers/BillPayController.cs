@@ -20,7 +20,6 @@ namespace MCBA_Web.Controllers
     [AuthorizeCustomer]
     public class BillPayController : Controller
     {
-        private const string account = "Account";
         private readonly McbaContext _context;
 
         // ReSharper disable once PossibleInvalidOperationException
@@ -34,28 +33,51 @@ namespace MCBA_Web.Controllers
         {
             BillPayViewModel vm = new BillPayViewModel();
             vm.Customer = await _context.Customers.FindAsync(CustomerID);
-            vm.BillPays = (List<BillPay>)_context.BillPays.AsQueryable().ToList();
-            vm.Accounts = vm.Customer.Accounts;
+            vm.BillPays = (List<BillPay>)_context.BillPays.AsQueryable().OrderBy(x => x.AccountNumber).ToList();
+            vm.Accounts = vm.Customer.Accounts.Select(x => x.AccountNumber).ToList();
             return View(vm);
         }
         [HttpPost]
-        public IActionResult Index(BillPayViewModel vm, int id)
+        public async Task<IActionResult> Index(int AccountNumber)
         {
+            BillPayViewModel vm = new BillPayViewModel();
             using (_context)
             {
-                vm.BillPays = (List<BillPay>)_context.BillPays.AsQueryable().ToList().Where(x => x.AccountNumber == id);
+                vm.Customer = await _context.Customers.FindAsync(CustomerID);
+                vm.Accounts = vm.Customer.Accounts.Select(x => x.AccountNumber).ToList();
+                vm.BillPays = _context.BillPays.AsQueryable().ToList();
+                if (AccountNumber != 0)
+                {
+                    vm.BillPays.RemoveAll(x => x.AccountNumber != AccountNumber);
+                }
+                
             }
             return View(vm);
         }
+
+        public async Task<IActionResult> Confirm(int id)
+        {
+            BillPay bp = null;
+            using (_context)
+            {
+                bp = await _context.BillPays.FindAsync(id);
+                bp.Status = ConstantVals.Finished;
+            }
+            HttpContext.Session.SetInt32("b", id);
+            return View(bp);
+        }
+
         [HttpPost]
-        public IActionResult Index(BillPayViewModel vm)
+        public async Task<IActionResult> Confirm()
         {
-            using (_context)
-            {
-                vm.BillPays = (List<BillPay>)_context.BillPays.AsQueryable().ToList().Where(x => x.AccountNumber == vm.Account.AccountNumber);
-            }
-            return View(vm);
+            int id = (int)HttpContext.Session.GetInt32("b");
+            Console.Error.WriteLine(id);
+            BillPay bp = await _context.BillPays.FindAsync(id);
+            bp.Status = ConstantVals.Finished;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
+
     }
 
 

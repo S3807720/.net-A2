@@ -41,21 +41,6 @@ namespace MCBA_Web.Controllers
             return View(customer);
         }
 
-        public bool verifyAmount(decimal amount)
-        {
-            if (amount <= 0)
-            {
-                ModelState.AddModelError(nameof(amount), "Amount must be positive.");
-                return false;
-            }
-            if (amount.HasMoreThanTwoDecimalPlaces())
-            {
-                ModelState.AddModelError(nameof(amount), "Amount cannot have more than 2 decimal places.");
-                return false;
-            }
-            return true;
-        }
-
         public async Task<IActionResult> Deposit(int id)
         {
             return View(
@@ -95,8 +80,10 @@ namespace MCBA_Web.Controllers
         public async Task<IActionResult> Withdraw(DepositViewModel viewModel)
         {
             viewModel.Account = await _context.Accounts.FindAsync(viewModel.AccountNumber);
-
-            if (viewModel.Amount > viewModel.Account.Balance)
+            var val = viewModel.Account.AccountType == AccountType.Checking ? ConstantVals.Minimum_Checking : ConstantVals.Minimum_Savings;
+            decimal fee = 0;
+            if (FeeOrNot(viewModel.Account)) fee = ConstantVals.Withdraw_Fee;
+            if (viewModel.Amount > viewModel.Account.Balance + val + fee)
             {
                 ModelState.AddModelError(nameof(viewModel.Amount), "Insufficient funds in account.");
             }
@@ -119,14 +106,17 @@ namespace MCBA_Web.Controllers
                     Account = await _context.Accounts.FindAsync(id)
                 });
         }
-
+  
         [HttpPost]
         public async Task<IActionResult> Transfer(DepositViewModel viewModel)
         {
 
             viewModel.Account = await _context.Accounts.FindAsync(viewModel.AccountNumber);
+            var val = viewModel.Account.AccountType == AccountType.Checking ? ConstantVals.Minimum_Checking : ConstantVals.Minimum_Savings;
+            decimal fee = 0;
+            if (FeeOrNot(viewModel.Account)) fee = ConstantVals.Transfer_Fee;
 
-            if (viewModel.Amount > viewModel.Account.Balance)
+            if (viewModel.Amount > viewModel.Account.Balance + val + fee)
             {
                 ModelState.AddModelError(nameof(viewModel.DestinationAccNumber), "Insufficient funds in account.");
             }
@@ -191,15 +181,12 @@ namespace MCBA_Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ViewStatements(Account acc)
+        public IActionResult ViewStatements(Account acc)
         {
-           // var customer = acc;
             if (acc == null)
                 return NotFound();
-
             // Store a complex object in the session via JSON serialisation.
             var accountJson = JsonConvert.SerializeObject(acc);
-           // HttpContext.Session.SetString(account, accountJson);
             HttpContext.Session.SetObject(account, acc);
             return RedirectToAction(nameof(Statements));
         }
@@ -209,16 +196,45 @@ namespace MCBA_Web.Controllers
             var acc = HttpContext.Session.GetObject<Account>(account);
             if (acc == null)
                 return RedirectToAction(nameof(Index)); // OR return BadRequest();
-
             // Retrieve complex object from the session via JSON deserialisation.
-           // var acc = JsonConvert.DeserializeObject<Transaction>(accountJson);
             ViewBag.Account = acc;
             // Page the orders, maximum of 3 per page.
             const int pageSize = 4;
             var pagedList = await _context.Transactions.Where(x => x.AccountNumber == acc.AccountNumber).
                  OrderBy(x => x.TransactionTimeUtc).ToPagedListAsync(page, pageSize);
-            //var pagedList = await acc.Transactions.OrderBy(x => x.TransactionTimeUtc).ToPagedListAsync((int)page, pageSize);
             return View(pagedList);
+        }
+        //check if acc should be charged fee
+        private bool FeeOrNot(Account acc)
+        {
+            int counter = 0;
+            foreach (Transaction trans in acc.Transactions)
+            {
+                if (trans.TransactionType == (char)TransactionType.Transfer || trans.TransactionType == (char)TransactionType.Withdraw)
+                {
+                    counter++;
+                }
+            }
+            if (counter >= ConstantVals.Max_Free_Transfers)
+            {
+                return true;
+            }
+            return false;
+        }
+        //verify amount is appropriate decimals, and positive num
+        public bool verifyAmount(decimal amount)
+        {
+            if (amount <= 0)
+            {
+                ModelState.AddModelError(nameof(amount), "Amount must be positive.");
+                return false;
+            }
+            if (amount.HasMoreThanTwoDecimalPlaces())
+            {
+                ModelState.AddModelError(nameof(amount), "Amount cannot have more than 2 decimal places.");
+                return false;
+            }
+            return true;
         }
 
     }

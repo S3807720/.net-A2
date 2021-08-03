@@ -20,5 +20,7 @@ namespace MCBA_Models.Models
         public char Period { get; set; }
         [Required, Display(Name = "Scheduled Time")]
         public DateTime ScheduleTimeUtc { get; set; }
+        [Required, Display(Name = "Paid Status")]
+        public string Status { get; set; }
     }
 }
