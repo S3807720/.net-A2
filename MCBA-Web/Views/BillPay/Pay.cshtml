@@ -1,0 +1,57 @@
+﻿@model MCBA_Models.Models.BillPay
+@{
+    ViewData["Title"] = "Pay";
+}
+
+<h1 class="display-4">Account Number @Model.AccountNumber </h1>
+<h5>
+    Confirm BillPay Payment
+</h5>
+<form class="col-md-4" asp-action="Pay">
+    <input type="hidden" asp-for="AccountNumber" />
+    <table>
+        <tr class="table-row">
+            <th asp-for="AccountNumber" class="control-label">  Account Number:   </th>
+            <td>  @Model.AccountNumber </td>
+        </tr>
+
+        <tr class="table-row">
+            <th asp-for="BillPayID" class="control-label">  BillPay ID:   </th>
+            <td>  @Model.BillPayID </td>
+        </tr>
+        <tr class="table-row">
+            <th asp-for="PayeeID" class="control-label">  Payee:   </th>
+            <td>  @Model.PayeeID </td>
+        </tr>
+        <tr class="table-row">
+            <th asp-for="Amount" class="control-label">  Amount:   </th>
+            <td>  @Model.Amount </td>
+        </tr>
+        <tr class="table-row">
+            <th asp-for="Period" class="control-label">  Period:   </th>
+            <td>  @Model.Period </td>
+        </tr>
+        <tr class="table-row">
+            <th asp-for="ScheduleTimeUtc" class="control-label">  Scheduled Time:   </th>
+            <td>  @Model.ScheduleTimeUtc </td>
+        </tr>
+        <tr class="table-row">
+            <th asp-for="Status" class="control-label">  Status:   </th>
+            <td>  @Model.Status </td>
+        </tr>
+
+    </table>
+    <span asp-validation-for="Amount" class="text-danger"></span>
+    <div class="form-group">
+        <input type="submit" value="Pay" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-primary">Cancel</a>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to Accounts</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

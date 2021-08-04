@@ -11,22 +11,27 @@
         @using (Html.BeginForm("Index", "BillPay", FormMethod.Post))
         {
             <select class="custom-select" asp-for="AccountNumber" onchange="this.form.submit()">
-                <option></option>
+                <option>Select an account to enable payments</option>
                 @foreach (int num in Model.Accounts)
                 {
                     <option name="@num" value=@num>@num</option>
                 }
             </select>
         }
-        <a class="btn btn-primary input-group-append"
-           asp-action="AddPayment" asp-route-id="@Model.AccountNumber">
-            Add Payment
-        </a>
+        @if (Model.AccountNumber != null)
+        {
+            <a class="btn btn-primary input-group-append"
+               asp-action="AddPayment" asp-route-id="@Model.AccountNumber">
+                Add Payment
+            </a>
+        }
+
     </div>
     <table class="table table-dark">
 
         <tr>
             <th>@Html.DisplayNameFor(x => x.BillPays[0].BillPayID)</th>
+            <th>@Html.DisplayNameFor(x => x.BillPays[0].PayeeID)</th>
             <th>@Html.DisplayNameFor(x => x.BillPays[0].Amount)</th>
             <th>@Html.DisplayNameFor(x => x.BillPays[0].AccountNumber)</th>
             <th>@Html.DisplayNameFor(x => x.BillPays[0].Period)</th>
@@ -41,6 +46,7 @@
             <tr class="@style">
 
                 <td>@Html.DisplayFor(x => bpay.BillPayID)</td>
+                <th>@Html.DisplayFor(x => bpay.PayeeID)</th>
                 <td>@Html.DisplayFor(x => bpay.Amount)</td>
                 <td>@Html.DisplayFor(x => bpay.AccountNumber)</td>
                 <td>@Html.DisplayFor(x => bpay.Period)</td>
@@ -56,20 +62,19 @@
                             Pay
                         </a>
                     }
-                    else
-                    { <a class="btn btn-primary"
-                         asp-action="Edit" asp-route-id="@bpay.BillPayID">
-                            Edit
-                        </a>
-                    }
-                    @if(bpay.Status != ConstantVals.Finished)
+                    <a class="btn btn-primary"
+                       asp-action="Edit" asp-route-id="@bpay.BillPayID">
+                        Edit
+                    </a>
+
+                    @if (bpay.Status != ConstantVals.Finished)
                     {
                         <a class="btn btn-primary"
                            asp-action="Confirm" asp-route-id="@bpay.BillPayID">
                             Cancel
                         </a>
                     }
-                    
+
 
                 </td>
             </tr>

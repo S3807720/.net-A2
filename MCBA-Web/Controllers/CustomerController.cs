@@ -149,6 +149,21 @@ namespace MCBA_Web.Controllers
                 Comment = viewModel.Comment,
                 TransactionTimeUtc = DateTime.UtcNow
             };
+            if (trans.TransactionType == (char)TransactionType.Transfer || trans.TransactionType == (char)TransactionType.Withdraw)
+            {
+                if (FeeOrNot(acc))
+                {
+                    decimal amount = trans.TransactionType == (char)TransactionType.Transfer ? ConstantVals.Transfer_Fee : ConstantVals.Withdraw_Fee;
+                    acc.Transactions.Add(trans with
+                    {
+                        DestinationAccountNumber = null,
+                        TransactionType = (char) TransactionType.ServiceCharge,
+                        Amount = amount,
+                        Comment = String.Format("Transaction Fee of {0}", trans.TransactionType == (char)TransactionType.Transfer ? ConstantVals.Transfer_Fee : ConstantVals.Withdraw_Fee)
+                    });
+                    acc.Balance -= amount;
+                }
+            }
             acc.Transactions.Add(trans);
             if (viewModel.Type == 'D')
                 acc.Balance += viewModel.Amount;
@@ -215,7 +230,7 @@ namespace MCBA_Web.Controllers
                     counter++;
                 }
             }
-            if (counter >= ConstantVals.Max_Free_Transfers)
+            if (counter > ConstantVals.Max_Free_Transfers)
             {
                 return true;
             }

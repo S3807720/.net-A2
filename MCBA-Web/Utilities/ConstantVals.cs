@@ -8,5 +8,7 @@
     public static readonly int Max_Free_Transfers = 4;
     public static readonly string Failed = "Insufficient funds";
     public static readonly string Paid = "Paid";
+    public static readonly string Due = "Due";
     public static readonly string Finished = "Finished";
+    public static readonly string Blocked = "Blocked";
 }

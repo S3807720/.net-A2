@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using MCBA_Models.Models;
 namespace MCBA_Models.Models
 {
     public class BillPay

@@ -9,7 +9,6 @@ namespace MCBA_Web.Utilities
 {
     public static class MiscellaneousExtensionUtilities
     {
-
         public static char ParseEnum(this string value)
         {
             return value[0];

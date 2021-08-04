@@ -1,17 +1,18 @@
-﻿@model MCBA_Models.Models.BillPay
+﻿@model MCBA_Web.ViewModels.AddBillViewModel
+@using MCBA_Models.Models; 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Add Payment";
 }
 
 <h1 class="display-4">Account Number @Model.AccountNumber </h1>
 <h5>
     Edit Details
 </h5>
-<form class="col-md-4" asp-action="Edit">
+<form class="col-md-4" asp-action="AddPayment">
 
     <div class="form-group">
         <label asp-for="PayeeID" class="control-label"></label>
-        <input asp-for="PayeeID" class="form-control" value="@Model.PayeeID" />
+        <input asp-for="PayeeID" class="form-control" value="" />
         <span asp-validation-for="PayeeID" class="text-danger"></span>
     </div>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -23,9 +24,14 @@
     </div>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+    <input type="radio" name="Period" checked="checked" value="@Period.OneOff" /> Once Off <br />
+    <input type="radio" name="Period" value="@Period.Annually" /> Annual <br />
+    <input type="radio" name="Period" value="@Period.Quarterly" /> Quarterly <br />
+    <input type="radio" name="Period" value="@Period.Monthly" /> Monthly <br />
+
     <div class="form-group">
         <label asp-for="ScheduleTimeUtc" class="control-label"></label>
-        <input asp-for="ScheduleTimeUtc" class="form-control" value="@Model.ScheduleTimeUtc" />
+        <input asp-for="ScheduleTimeUtc" class="form-control" value="@DateTime.UtcNow.ToString()" />
         <span asp-validation-for="ScheduleTimeUtc" class="text-danger"></span>
     </div>
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
