@@ -9,7 +9,7 @@ using MCBA_Web.ViewModels;
 using System.Linq;
 using X.PagedList;
 using System.Collections.Generic;
-using MCBA_Web.Utilities;
+using MCBA_Models.Utilities;
 
 namespace MCBA_Web.Controllers
 {
@@ -63,7 +63,6 @@ namespace MCBA_Web.Controllers
             using (_context)
             {
                 bp = await _context.BillPays.FindAsync(id);
-                bp.Status = ConstantVals.Finished;
             }
             HttpContext.Session.SetInt32(nameof(BillPay.BillPayID), id);
             return View(bp);

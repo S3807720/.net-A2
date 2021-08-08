@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div>
+    <h1 class="display-4">Most Common Bank of Australia</h1>
+
+    <div class="text-left">
+        <p>Hello potential admin!</p>
+    </div>
+</div>
+
+<hr />
+
+<h3>Example links</h3>
+
+<p>
+    <a asp-controller="Login" asp-action="Login">Login link using Tag Helper</a>
+</p>
+<p>
+    @Html.ActionLink("Login link using Html Helper", "Login", "Login")
+</p>

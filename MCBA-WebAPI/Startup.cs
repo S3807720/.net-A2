@@ -25,6 +25,7 @@ namespace MCBA_WebAPI
                 services.AddScoped<CustomersManager>();
                 services.AddScoped<TransactionsManager>();
                 services.AddScoped<LoginManager>();
+                services.AddScoped<BillPayManager>();
                 services.AddControllers();
             }
 

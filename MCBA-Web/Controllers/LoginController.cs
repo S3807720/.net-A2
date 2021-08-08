@@ -23,6 +23,12 @@ namespace MCBA_Web.Controllers
         public async Task<IActionResult> Login(int loginID, string password)
         {
             var login = await _context.Logins.FindAsync(loginID);
+            var cust = await _context.Customers.FindAsync(login.CustomerID);
+            if (cust.CanLogin == false)
+            {
+                ModelState.AddModelError("LoginFailed", "This account has been locked.");
+                return View(new Login { LoginID = loginID });
+            }
             if(login == null || !PBKDF2.Verify(login.PasswordHash, password))
             { 
                 ModelState.AddModelError("LoginFailed", "Login failed, please try again.");

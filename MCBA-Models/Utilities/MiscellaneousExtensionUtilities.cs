@@ -2,10 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Text;
 
-namespace MCBA_Web.Utilities
+namespace MCBA_Models.Utilities
 {
     public static class MiscellaneousExtensionUtilities
     {
@@ -27,36 +26,10 @@ namespace MCBA_Web.Utilities
             return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
 
-        public static bool IsAvailable(this SqlConnection conn)
-        {
-            try
-            {
-                Console.WriteLine($"Attempting to connect to the database...");
-                conn.Open();
-                conn.Close();
-                Console.Clear();
-            }
-            catch (SqlException)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public static DataTable GetDataTable(this SqlCommand command)
-        {
-            using var adapter = new SqlDataAdapter(command);
-
-            var table = new DataTable();
-            adapter.Fill(table);
-
-            return table;
-        }
-
         //mask input
         public static string HideCharacter()
         {
-            StringBuilder input = new StringBuilder();
+            StringBuilder input = new();
             while (true)
             {
                 int x = Console.CursorLeft;

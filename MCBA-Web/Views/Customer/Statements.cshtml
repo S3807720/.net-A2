@@ -21,13 +21,14 @@
         </tr>
         @foreach (var tran in Model)
         {
+            var time = tran.TransactionTimeUtc.ToLocalTime();
             <tr>
                 <th>@Html.DisplayFor(x => tran.TransactionID)</th>
                 <th>@Html.DisplayFor(x => tran.TransactionType)</th>
                 <th>@Html.DisplayFor(x => tran.DestinationAccountNumber)</th>
                 <th>@Html.DisplayFor(x => tran.Amount)</th>
                 <th>@Html.DisplayFor(x => tran.Comment)</th>
-                <th>@Html.DisplayFor(x => tran.TransactionTimeUtc)</th>
+                <th>@time</th>
             </tr>
         }
     </table>

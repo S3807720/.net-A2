@@ -45,7 +45,7 @@ namespace Mcba_Web.BackgroundServices
             var bpays = await context.BillPays.ToListAsync(cancellationToken);
             foreach (var bpay in bpays)
             {
-                if (bpay.Status != ConstantVals.Finished)
+                if (bpay.Status != ConstantVals.Finished && bpay.Status != ConstantVals.Blocked)
                 {
                     if (DateTime.UtcNow.ToFileTimeUtc() > bpay.ScheduleTimeUtc.ToFileTimeUtc())
                     {

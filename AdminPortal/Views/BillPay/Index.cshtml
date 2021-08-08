@@ -1,0 +1,55 @@
+﻿@model List<MCBA_Models.Models.BillPay>
+@{
+    ViewData["Title"] = "Index";
+    var blocked = "";
+}
+
+<div>
+    <h1 class="display-4">Welcome, All Mighty Admin</h1>
+
+    <h3>BillPay List</h3>
+    <div class="input-group">
+
+    </div>
+    <table class="table table-dark">
+
+        <tr>
+            <th>@Html.DisplayNameFor(Model => Model[0].BillPayID)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].PayeeID)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].Amount)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].AccountNumber)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].Period)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].ScheduleTimeUtc)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].Status)</th>
+            <th></th>
+        </tr>
+        @foreach (var bpay in Model)
+        {
+            var time = bpay.ScheduleTimeUtc.ToLocalTime();
+            var style = (bpay.Status == ConstantVals.Failed) ? "btn-outline-warning" : "";
+            <tr class="@style">
+
+                <td>@Html.DisplayFor(x => bpay.BillPayID)</td>
+                <th>@Html.DisplayFor(x => bpay.PayeeID)</th>
+                <td>@Html.DisplayFor(x => bpay.Amount)</td>
+                <td>@Html.DisplayFor(x => bpay.AccountNumber)</td>
+                <td>@Html.DisplayFor(x => bpay.Period)</td>
+                <td>@time</td>
+                <td>@Html.DisplayFor(x => bpay.Status)</td>
+
+                <td>
+                    @{ blocked = bpay.Status == ConstantVals.Blocked ? "Unblock Payment" : "Block Payment"; }
+                    @if (bpay.Status != ConstantVals.Finished)
+                    {
+                        <input type="hidden" name="BillPayID" value="@bpay.BillPayID" />
+                        <a class="btn btn-primary"
+                           asp-controller="BillPay" asp-action="Block" asp-route-id="@bpay.BillPayID">
+                            @blocked
+                        </a>
+                    }
+
+                </td>
+            </tr>
+        }
+    </table>
+</div>

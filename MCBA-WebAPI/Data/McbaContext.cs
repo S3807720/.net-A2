@@ -1,5 +1,5 @@
-﻿using MCBA_Models.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MCBA_Models.Models;
 
 namespace MCBA_WebAPI.Data
 {
@@ -12,6 +12,8 @@ namespace MCBA_WebAPI.Data
         public DbSet<Login> Logins { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<BillPay> BillPays { get; set; }
+        public DbSet<Payee> Payees { get; set; }
 
         // Fluent-API.
         protected override void OnModelCreating(ModelBuilder builder)

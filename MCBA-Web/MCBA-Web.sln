@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MCBA-Models", "..\MCBA-Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MCBA-WebAPI", "..\MCBA-WebAPI\MCBA-WebAPI.csproj", "{50AEAE0B-2CE9-4EBF-8159-358F064CC8D8}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminPortal", "..\AdminPortal\AdminPortal.csproj", "{090FF6DB-8699-4030-9946-BBFC29E01DEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{50AEAE0B-2CE9-4EBF-8159-358F064CC8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50AEAE0B-2CE9-4EBF-8159-358F064CC8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50AEAE0B-2CE9-4EBF-8159-358F064CC8D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{090FF6DB-8699-4030-9946-BBFC29E01DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090FF6DB-8699-4030-9946-BBFC29E01DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090FF6DB-8699-4030-9946-BBFC29E01DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090FF6DB-8699-4030-9946-BBFC29E01DEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

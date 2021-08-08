@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MCBA_Web.Data;
 using MCBA_Models.Models;
-using MCBA_Web.Utilities;
 using MCBA_Web.Filters;
 using MCBA_Web.ViewModels;
 using Newtonsoft.Json;
 using System.Linq;
 using X.PagedList;
+using MCBA_Models.Utilities;
 
 namespace MCBA_Web.Controllers
 {

@@ -85,6 +85,9 @@ namespace MCBA_Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("CanLogin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Mobile")
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
@@ -128,9 +131,6 @@ namespace MCBA_Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(8)
                         .HasColumnType("nchar(8)");
-
-                    b.Property<bool>("CanLogin")
-                        .HasColumnType("bit");
 
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");

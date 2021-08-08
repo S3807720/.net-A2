@@ -1,0 +1,41 @@
+﻿@model List<MCBA_Models.Models.Customer>
+@using MCBA_Models.Models;
+@{ ViewData["Title"] = "Accounts"; }
+@{ var log = ""; }
+
+<div>
+    <h1 class="display-4">Welcome, Admin!</h1>
+
+    <h3>Customer Accounts</h3>
+    <table class="table table-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(Model => Model[0].Name)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].CustomerID)</th>
+            <th>@Html.DisplayNameFor(Model => Model[0].Accounts)</th>
+            <th></th>
+        </tr>
+        @foreach (Customer cust in Model)
+        {
+            if (cust.CanLogin == true)
+                log = "Lock Account";
+            else
+                log = "Unlock Account";
+            <tr>
+                <td>@Html.DisplayFor(x => cust.Name)</td>
+                <td>@Html.DisplayFor(x => cust.CustomerID)</td>
+                <td>@Html.DisplayFor(x => cust.Accounts)</td>
+                <td>
+                    <input type="hidden" name="customerID" value="@cust.CustomerID" />
+                    <a class="btn btn-primary"
+                       asp-controller="Profile" asp-action="Index" asp-route-id="@cust.CustomerID">
+                        Edit Customer Account
+                    </a>
+                    <a class="btn btn-primary"
+                       asp-controller="Customer" asp-action="Lock" asp-route-id="@cust.CustomerID">
+                        @log
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

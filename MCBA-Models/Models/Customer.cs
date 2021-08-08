@@ -23,10 +23,12 @@ namespace MCBA_Models.Models
         [StringLength(4)]
         public string PostCode { get; set; }
 
-        [RegularExpression(@"^(\d{11})$", ErrorMessage = "Number must be of the format 04xx xxx xxx.")]
-        [StringLength(11)]
+        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Number must be of the format 04xx xxx xxx. (Without spaces)")]
+        [StringLength(10)]
         [DataType(DataType.PhoneNumber)]
         public string Mobile { get; set; }
         public virtual List<Account> Accounts { get; set; }
+
+        public bool CanLogin { get; set; } = true;
     }
 }

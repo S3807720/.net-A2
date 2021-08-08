@@ -21,7 +21,7 @@ namespace MCBA_Models.Models
         [Required, StringLength(4)]
         public string PostCode { get; set; }
 
-        [RegularExpression(@"(\()(0\d{1})(\))^(\d{8})$", ErrorMessage = "Number must be of the format (0x) xxxx xxxx.")]
+        [RegularExpression(@"(\()(0\d{1})(\))^(\d{8})$", ErrorMessage = "Number must be of the format (0x) xxxx xxxx. (Without spaces)")]
         [StringLength(14)]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
