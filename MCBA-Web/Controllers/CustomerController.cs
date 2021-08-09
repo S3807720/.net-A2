@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using X.PagedList;
 using MCBA_Models.Utilities;
+using System.Collections.Generic;
 
 namespace MCBA_Web.Controllers
 {
@@ -29,18 +30,31 @@ namespace MCBA_Web.Controllers
         [AuthorizeCustomer]
         public async Task<IActionResult> Index()
         {
-            // Lazy loading.
-            // The Customer.Accounts property will be lazy loaded upon demand.
+            await SetBalance();
             var customer = await _context.Customers.FindAsync(CustomerID);
 
-            // OR
-            // Eager loading.
-            //var customer = await _context.Customers.Include(x => x.Accounts).
-            //    FirstOrDefaultAsync(x => x.CustomerID == _customerID);
 
             return View(customer);
         }
-
+        //set balance manually on account page refresh, incase of error
+        public async Task SetBalance()
+        {
+            List<Account> accounts = _context.Accounts.ToList();
+            foreach(Account acc in accounts)
+            {
+                decimal balance = 0;
+                foreach(Transaction trans in acc.Transactions)
+                {
+                    if (trans.TransactionType == (char)TransactionType.Deposit ||
+                        (trans.TransactionType == (char)TransactionType.Transfer && trans.DestinationAccountNumber == null))
+                        balance += trans.Amount;
+                    else
+                        balance -= trans.Amount;
+                }
+                acc.Balance = balance;
+                await _context.SaveChangesAsync();
+            }
+        }
         public async Task<IActionResult> Deposit(int id)
         {
             return View(
@@ -56,7 +70,7 @@ namespace MCBA_Web.Controllers
         {
             viewModel.Account = await _context.Accounts.FindAsync(viewModel.AccountNumber);
 
-            verifyAmount(viewModel.Amount);
+            VerifyAmount(viewModel.Amount);
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
@@ -87,7 +101,7 @@ namespace MCBA_Web.Controllers
             {
                 ModelState.AddModelError(nameof(viewModel.Amount), "Insufficient funds in account.");
             }
-            verifyAmount(viewModel.Amount);
+            VerifyAmount(viewModel.Amount);
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
@@ -128,7 +142,7 @@ namespace MCBA_Web.Controllers
             {
                 ModelState.AddModelError(nameof(viewModel.DestinationAccNumber), "Destination account does not exist.");
             }
-            verifyAmount(viewModel.Amount);
+            VerifyAmount(viewModel.Amount);
             if (!ModelState.IsValid)
             {
                 return View(viewModel);
@@ -138,7 +152,7 @@ namespace MCBA_Web.Controllers
             return RedirectToAction(nameof(Confirm));
         }
 
-        public async Task addTransaction(DepositViewModel viewModel)
+        public async Task AddTransaction(DepositViewModel viewModel)
         {
             var acc = await _context.Accounts.FindAsync(viewModel.AccountNumber);
             var trans = new Transaction
@@ -189,15 +203,16 @@ namespace MCBA_Web.Controllers
         public async Task<IActionResult> Confirm()
         {
             DepositViewModel viewModel = HttpContext.Session.GetObject<DepositViewModel>(account);
-            await addTransaction(viewModel);
+            await AddTransaction(viewModel);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public IActionResult ViewStatements(Account acc)
+        public async Task<IActionResult> ViewStatements(int num)
         {
+            var acc = await _context.Accounts.FindAsync(num);
             if (acc == null)
                 return NotFound();
             // Store a complex object in the session via JSON serialisation.
@@ -206,7 +221,7 @@ namespace MCBA_Web.Controllers
             return RedirectToAction(nameof(Statements));
         }
 
-        public async Task<IActionResult> Statements(int page = 1)
+        public async Task<IActionResult> Statements(int? page = 1)
         {
             var acc = HttpContext.Session.GetObject<Account>(account);
             if (acc == null)
@@ -216,16 +231,16 @@ namespace MCBA_Web.Controllers
             // Page the orders, maximum of 3 per page.
             const int pageSize = 4;
             var pagedList = await _context.Transactions.Where(x => x.AccountNumber == acc.AccountNumber).
-                 OrderBy(x => x.TransactionTimeUtc).ToPagedListAsync(page, pageSize);
+                 OrderByDescending(x => x.TransactionTimeUtc).ToPagedListAsync(page, pageSize);
             return View(pagedList);
         }
         //check if acc should be charged fee
-        private bool FeeOrNot(Account acc)
+        public static bool FeeOrNot(Account acc)
         {
             int counter = 0;
             foreach (Transaction trans in acc.Transactions)
             {
-                if (trans.TransactionType == (char)TransactionType.Transfer || trans.TransactionType == (char)TransactionType.Withdraw)
+                if ( (trans.TransactionType == (char)TransactionType.Transfer && trans.DestinationAccountNumber != null) || trans.TransactionType == (char)TransactionType.Withdraw)
                 {
                     counter++;
                 }
@@ -237,7 +252,7 @@ namespace MCBA_Web.Controllers
             return false;
         }
         //verify amount is appropriate decimals, and positive num
-        public bool verifyAmount(decimal amount)
+        public bool VerifyAmount(decimal amount)
         {
             if (amount <= 0)
             {

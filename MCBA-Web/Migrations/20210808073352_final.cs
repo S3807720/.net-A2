@@ -1,12 +1,30 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MCBA_WebAPI.Migrations
+namespace MCBA_Web.Migrations
 {
-    public partial class init : Migration
+    public partial class final : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "BillPays",
+                columns: table => new
+                {
+                    BillPayID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AccountNumber = table.Column<int>(type: "int", nullable: false),
+                    PayeeID = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "money", nullable: false),
+                    Period = table.Column<string>(type: "nvarchar(1)", nullable: false),
+                    ScheduleTimeUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BillPays", x => x.BillPayID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
@@ -18,7 +36,8 @@ namespace MCBA_WebAPI.Migrations
                     Suburb = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     State = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
                     PostCode = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: true),
-                    Mobile = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true)
+                    Mobile = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    CanLogin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,6 +46,24 @@ namespace MCBA_WebAPI.Migrations
                     table.CheckConstraint("CH_TFN", "len(TFN) = 11");
                     table.CheckConstraint("CH_Postcode", "len(Postcode) = 4");
                     table.CheckConstraint("CH_Mobile", "len(Mobile) = 11");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payees",
+                columns: table => new
+                {
+                    PayeeID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Suburb = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
+                    PostCode = table.Column<string>(type: "nvarchar(4)", maxLength: 4, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payees", x => x.PayeeID);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,7 +92,6 @@ namespace MCBA_WebAPI.Migrations
                 columns: table => new
                 {
                     LoginID = table.Column<string>(type: "nchar(8)", maxLength: 8, nullable: false),
-                    CanLogin = table.Column<bool>(type: "bit", nullable: false),
                     CustomerID = table.Column<int>(type: "int", nullable: false),
                     PasswordHash = table.Column<string>(type: "nchar(64)", maxLength: 64, nullable: false)
                 },
@@ -127,7 +163,13 @@ namespace MCBA_WebAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BillPays");
+
+            migrationBuilder.DropTable(
                 name: "Logins");
+
+            migrationBuilder.DropTable(
+                name: "Payees");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

@@ -17,7 +17,7 @@ namespace MCBA_Web.Filters
 
             var customerID = context.HttpContext.Session.GetString(nameof(Customer.CustomerID));
             if(customerID == null)
-                context.Result = new RedirectToActionResult("Index", "Home", null);
+                context.Result = new RedirectToActionResult("Login", "Login", null);
         }
     }
 }

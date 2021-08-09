@@ -1,20 +1,16 @@
-Withdraw/depo/transfer -> confirm -> update mcbacontext /
+S3807720, Luke Smith - SOLO
+https://github.com/rmit-wdt-sp2-2021/s3807720-a2 
 
-Statement -> view balance of specific account and pages of 4 transactions ordered by recent. /
+Records have been utilized for transactions, as these should not be ever changed, and refunds and such would 
+be new transactions. This also allows the ability to duplicate the 
+original transaction and adjust the destination and account number associated with the 'with' command
+to allow easier creation of service charges and receiving transfer payments.
 
-My profile -> show details and allow editing name, tfn, addr, suburb, state, postcode, mobile /
+Identity was attempted in one of the Git branches, but abandoned due to the amount of work involved.
 
-Add record type variables somehow. probably in transactions as these can't be removed.
+**NOTE** Click on the privacy page to generate 100s of random transactions for appropriate data.
 
-BillPay -> show all current billpays, modify or cancel these. 
-Once a bill is scheduled these should be automatically executed at the date and time scheduled
-by the user. The bill payment should fail if the account has an insufficient balance. If failure
-occurs the error should be conveyed to the user on the BillPay page with options to deal with
-the error, for example cancel, reschedule, or try again, etc…
+Charts have been added, one showing the transactions for the account by month on the home page. This utilizes all
+transactions for the accounts under the customer logged in. It also displays the types in a pie chart below it.
 
-HD stuff in doc... just login and admin stuff
-
-
-Records have been utilized for transactions, as these should not be ever changed, and refunds and such would be new transactions.
-This place is a good choice, as well as being able to duplicate the original transaction and adjust the 
-destination and account number associated with the 'with' command.
+These charts have also been added to show all accounts in the admin home page.

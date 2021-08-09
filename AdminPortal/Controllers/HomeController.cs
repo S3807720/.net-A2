@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using MCBA_Admin.Models;
+using MCBA_Web.Filters;
 
 namespace MCBA_Admin.Controllers
 {
-    [AllowAnonymous]
+    [AuthorizeCustomer]
     public class HomeController : Controller
     {
         public IActionResult Index() => View();

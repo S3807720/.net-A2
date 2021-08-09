@@ -15,7 +15,6 @@ namespace MCBA_Web.ViewModels
         public List<BillPay> BillPays { get; set; }
         public int PayeeID { get; set; }
         [DataType(DataType.Currency)]
-        [RegularExpression(@"^\d+\.\d{0,2}$")]
         [Range(0, 9999999999999999.99)]
         public decimal Amount { get; set; }
         public char Period { get; set; }

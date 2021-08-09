@@ -4,3 +4,22 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>Use this page to detail your site's privacy policy.</p>
+<p>Ooops you added a few 100 transactions!</p>
+
+
+@{ ViewData["Title"] = "Home"; }
+
+
+<div class="container">
+    <canvas id="transactionChart"></canvas>
+</div>
+@section Scripts {
+    <script src="~/js/chart.js"></script>
+    <script src="~/js/moment.js"></script>
+    <script src="~/js/chartjs-adapter-moment.js"></script>
+    <script>
+        var canvas = document.getElementById("transactionChart").getContext("2d");
+
+        $.get("/Data/AddTransactions");
+    </script>
+}

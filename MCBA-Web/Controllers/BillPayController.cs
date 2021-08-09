@@ -27,7 +27,7 @@ namespace MCBA_Web.Controllers
         [AuthorizeCustomer]
         public async Task<IActionResult> Index()
         {
-            BillPayViewModel vm = new BillPayViewModel();
+            BillPayViewModel vm = new();
             vm.Customer = await _context.Customers.FindAsync(CustomerID);
             vm.BillPays = (List<BillPay>)_context.BillPays.AsQueryable().OrderBy(x => x.AccountNumber).ToList();
             vm.Accounts = vm.Customer.Accounts.Select(x => x.AccountNumber).ToList();
@@ -37,7 +37,7 @@ namespace MCBA_Web.Controllers
         public async Task<IActionResult> Index(int AccountNumber)
         {
             HttpContext.Session.SetInt32(nameof(Account.AccountNumber), AccountNumber);
-            BillPayViewModel vm = new BillPayViewModel();
+            BillPayViewModel vm = new();
             using (_context)
             {
                 vm.Customer = await _context.Customers.FindAsync(CustomerID);
@@ -110,7 +110,7 @@ namespace MCBA_Web.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        public IActionResult AddPayment(int id)
+        public IActionResult AddPayment()
         {
             return View(new AddBillViewModel()
             {
@@ -136,12 +136,12 @@ namespace MCBA_Web.Controllers
                 ModelState.AddModelError(nameof(vm.PayeeID), "Payee must not be empty.");
                 return View(vm);
             }
-            BillPay bp = new BillPay();
+            BillPay bp = new();
             bp.AccountNumber = vm.AccountNumber;
             bp.Amount = vm.Amount;
             bp.PayeeID = (int)vm.PayeeID;
             bp.Period = (char)vm.Period;
-            bp.ScheduleTimeUtc = vm.ScheduleTimeUtc;
+            bp.ScheduleTimeUtc = vm.ScheduleTimeUtc.ToUniversalTime();
             bp.Status = ConstantVals.Paid;
             _context.BillPays.Add(bp);
             await _context.SaveChangesAsync();

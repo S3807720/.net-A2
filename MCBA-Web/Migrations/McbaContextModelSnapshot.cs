@@ -89,8 +89,8 @@ namespace MCBA_Web.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Mobile")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()

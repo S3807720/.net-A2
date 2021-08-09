@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MCBA_Models.Utilities;
 
 namespace Mcba_Web.BackgroundServices
 {
@@ -47,6 +48,7 @@ namespace Mcba_Web.BackgroundServices
             {
                 if (bpay.Status != ConstantVals.Finished && bpay.Status != ConstantVals.Blocked)
                 {
+                    DateTime time = bpay.ScheduleTimeUtc;
                     if (DateTime.UtcNow.ToFileTimeUtc() > bpay.ScheduleTimeUtc.ToFileTimeUtc())
                     {
                         Account acc = await context.Accounts.FindAsync(bpay.AccountNumber);
@@ -60,6 +62,9 @@ namespace Mcba_Web.BackgroundServices
                             bpay.Status = ConstantVals.Failed;
                         }
 
+                    } else if (DateTime.UtcNow.AddDays(7) > time)
+                    {
+                        bpay.Status = ConstantVals.Due;
                     }
                 }
 

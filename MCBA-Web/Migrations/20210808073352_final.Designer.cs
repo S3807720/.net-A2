@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MCBA_Web.Migrations
 {
     [DbContext(typeof(McbaContext))]
-    [Migration("20210802120016_a")]
-    partial class a
+    [Migration("20210808073352_final")]
+    partial class final
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +69,10 @@ namespace MCBA_Web.Migrations
                     b.Property<DateTime>("ScheduleTimeUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("BillPayID");
 
                     b.ToTable("BillPays");
@@ -83,9 +87,12 @@ namespace MCBA_Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("CanLogin")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Mobile")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -127,9 +134,6 @@ namespace MCBA_Web.Migrations
                         .HasMaxLength(8)
                         .HasColumnType("nchar(8)");
 
-                    b.Property<bool>("CanLogin")
-                        .HasColumnType("bit");
-
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
 
@@ -161,14 +165,14 @@ namespace MCBA_Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Mobile")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
 
                     b.Property<string>("PostCode")
                         .IsRequired()

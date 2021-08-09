@@ -24,7 +24,7 @@ namespace MCBA_Admin.Controllers
                 return View(new MCBA_Admin.Models.Login { LoginID = loginID });
             }
             HttpContext.Session.SetString(nameof(Customer.CustomerID), loginID);
-            return RedirectToAction("Index", "Customer");
+            return RedirectToAction("Index", "Home");
         }
 
         [Route("LogoutNow")]
