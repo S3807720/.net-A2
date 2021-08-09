@@ -29,7 +29,7 @@ namespace MCBA_Web.Controllers
         {
             BillPayViewModel vm = new();
             vm.Customer = await _context.Customers.FindAsync(CustomerID);
-            vm.BillPays = (List<BillPay>)_context.BillPays.AsQueryable().OrderBy(x => x.AccountNumber).ToList();
+            vm.BillPays = _context.BillPays.AsQueryable().OrderBy(x => x.AccountNumber).ToList();
             vm.Accounts = vm.Customer.Accounts.Select(x => x.AccountNumber).ToList();
             return View(vm);
         }
@@ -42,7 +42,7 @@ namespace MCBA_Web.Controllers
             {
                 vm.Customer = await _context.Customers.FindAsync(CustomerID);
                 vm.Accounts = vm.Customer.Accounts.Select(x => x.AccountNumber).ToList();
-                vm.BillPays = _context.BillPays.AsQueryable().ToList();
+                vm.BillPays = _context.BillPays.AsQueryable().OrderByDescending(x => x.ScheduleTimeUtc).ToList();
                 if (AccountNumber != 0)
                 {
                     vm.AccountNumber = AccountNumber;

@@ -16,7 +16,7 @@ namespace MCBA_Web.Controllers
 
         // ReSharper disable once PossibleInvalidOperationException
         private int CustomerID => HttpContext.Session.GetInt32(nameof(Customer.CustomerID)).Value;
-        private string LoginID => HttpContext.Session.GetString(nameof(Login.LoginID));
+        private int LoginID => HttpContext.Session.GetInt32(nameof(Login.LoginID)).Value;
       //  HttpContext.Session.getString(nameof(login.LoginID), login.LoginID);
         public ProfileController(McbaContext context) => _context = context;
 
@@ -34,6 +34,7 @@ namespace MCBA_Web.Controllers
             customer.Address = cust.Address;
             customer.TFN = cust.TFN;
             customer.State = cust.State;
+            customer.Suburb = cust.Suburb;
             customer.PostCode = cust.PostCode;
             customer.Name = cust.Name;
             customer.Mobile = cust.Mobile;

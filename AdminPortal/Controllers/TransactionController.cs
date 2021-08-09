@@ -84,7 +84,7 @@ namespace MCBA_Admin.Controllers
             }
 
             var result = await response.Content.ReadAsStringAsync();
-            var trans = JsonConvert.DeserializeObject<List<Transaction>>(result);
+            var trans = JsonConvert.DeserializeObject<List<Transaction>>(result).OrderByDescending(x => x.TransactionTimeUtc).ToList();
             return trans;
         }
 

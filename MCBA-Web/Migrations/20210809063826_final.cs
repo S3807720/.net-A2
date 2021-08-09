@@ -45,7 +45,6 @@ namespace MCBA_Web.Migrations
                     table.CheckConstraint("CH_CustomerID", "len(CustomerID) = 4");
                     table.CheckConstraint("CH_TFN", "len(TFN) = 11");
                     table.CheckConstraint("CH_Postcode", "len(Postcode) = 4");
-                    table.CheckConstraint("CH_Mobile", "len(Mobile) = 11");
                 });
 
             migrationBuilder.CreateTable(

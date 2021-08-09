@@ -158,7 +158,7 @@ namespace MCBA_Web.Graph
         //fake data :)
         //using the fee check to add appropriate fee transactions too
         [HttpGet("[action]")]
-        public async Task<string> AddTransactionsAsync()
+        public async Task<string> AddTransactions()
         {
             Console.Error.WriteLine("Writing transactions..");
             var accs = _context.Accounts.ToList();

@@ -16,7 +16,7 @@ namespace MCBA_Web.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("MCBA_Models.Models.Account", b =>
@@ -121,8 +121,6 @@ namespace MCBA_Web.Migrations
                     b.HasCheckConstraint("CH_TFN", "len(TFN) = 11");
 
                     b.HasCheckConstraint("CH_Postcode", "len(Postcode) = 4");
-
-                    b.HasCheckConstraint("CH_Mobile", "len(Mobile) = 11");
                 });
 
             modelBuilder.Entity("MCBA_Models.Models.Login", b =>

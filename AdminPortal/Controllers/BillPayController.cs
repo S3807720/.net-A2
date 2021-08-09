@@ -8,6 +8,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using MCBA_Models.Utilities;
+using System.Linq;
 
 namespace MCBA_Admin.Controllers
 {
@@ -36,7 +37,8 @@ namespace MCBA_Admin.Controllers
             }
 
             var result = await response.Content.ReadAsStringAsync();
-            var bills = JsonConvert.DeserializeObject<List<BillPay>>(result);
+            var bills = JsonConvert.DeserializeObject<List<BillPay>>(result).OrderByDescending(x => x.ScheduleTimeUtc).ToList();
+            //bills.OrderByDescending(x => x.ScheduleTimeUtc);
             return bills;
         }
         public async Task<IActionResult> Block(int id)
